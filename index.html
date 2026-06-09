@@ -212,7 +212,7 @@
           <thead><tr>
             <th>Código</th><th>Centro educativo</th><th>Municipio</th><th>Departamento</th>
             <th>Bloque</th><th>Zona</th><th style="text-align:right">Matrícula</th>
-            <th style="text-align:right">MEGAS CONTRATADOS (Mbps)</th><th style="text-align:right">ANCHO DE BANDA SEGUN INSPECCIONES</th><th>Estado</th>
+            <th style="text-align:right">Megas Contrat.</th><th style="text-align:right">AB Inspección</th><th>Estado</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -307,7 +307,7 @@ function renderKPIs(){
     <div class="kpi-card red"><div class="kpi-label">No cumplen</div><div class="kpi-value">${no.toLocaleString()}</div><div class="kpi-sub">${tot?Math.round(no/tot*100):0}% del total</div></div>
     <div class="kpi-card amber"><div class="kpi-label">Sin dato</div><div class="kpi-value">${sd.toLocaleString()}</div></div>
     <div class="kpi-card"><div class="kpi-label">Matrícula total</div><div class="kpi-value">${mat.toLocaleString()}</div></div>
-    <div class="kpi-card"><div class="kpi-label">OS promedio</div><div class="kpi-value">${avgOS}</div><div class="kpi-sub">Mbps</div></div>`;
+    <div class="kpi-card"><div class="kpi-label">Megas Contrat. prom.</div><div class="kpi-value">${avgOS}</div><div class="kpi-sub">Mbps</div></div>`;
 }
 
 /* ── BARRAS ── */
@@ -423,8 +423,8 @@ function renderTable(){
       <td class="mono">${r.codigo}</td><td class="nc" title="${r.nombre}">${r.nombre}</td>
       <td>${r.municipio}</td><td>${r.departamento}</td><td>${r.bloque}</td><td>${r.zona||'—'}</td>
       <td class="num">${r.matricula!=null?r.matricula.toLocaleString():'—'}</td>
-      <td class="num">${r.contratados!=null?r.os.toLocaleString():'—'}</td>
-      <td class="num">${r.inspecciones!=null?r.es.toLocaleString():'—'}</td>
+      <td class="num">${r.os!=null?r.os.toLocaleString():'—'}</td>
+      <td class="num">${r.es!=null?r.es.toLocaleString():'—'}</td>
       <td><span class="badge ${bc}"><span class="bdot"></span>${r.cumple}</span></td>
     </tr>`;
   }).join('');
