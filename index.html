@@ -14,176 +14,129 @@
       --text:#e8eaf0; --text2:#8b92a8; --text3:#5a6075;
       --accent:#4f7cf7; --green:#34d399; --green-bg:rgba(52,211,153,0.12);
       --red:#f87171; --red-bg:rgba(248,113,113,0.12);
-      --amber:#fbbf24; --amber-bg:rgba(251,191,36,0.12);
-      --radius:10px; --radius-lg:14px;
+      --amber:#fbbf24; --radius:10px; --radius-lg:14px;
     }
-    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; line-height:1.6; }
-
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; }
     .header { background:var(--bg2); border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:200; }
     .header-brand { display:flex; align-items:center; gap:10px; }
-    .header-logo { width:32px; height:32px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; }
-    .header-logo svg { width:18px; height:18px; stroke:#fff; fill:none; stroke-width:2; }
-    .header-title { font-size:15px; font-weight:600; }
-    .header-sub { font-size:12px; color:var(--text2); }
-    .status-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; display:inline-block; margin-right:6px; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-    .header-status { font-size:12px; color:var(--text2); }
-
-    .page { max-width:1400px; margin:0 auto; padding:1.5rem 2rem 3rem; }
-
-    .loading-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:5rem 2rem; color:var(--text2); }
-    .spinner { width:36px; height:36px; border:3px solid var(--border2); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
-    @keyframes spin { to{transform:rotate(360deg)} }
-    .error-box { background:var(--red-bg); border:1px solid rgba(248,113,113,.3); border-radius:var(--radius); padding:1.25rem 1.5rem; color:var(--red); font-size:13px; margin:2rem 0; }
-
-    .kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:1.5rem; }
-    .kpi-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.1rem 1.25rem; transition:border-color .2s; }
-    .kpi-card:hover { border-color:var(--border2); }
-    .kpi-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
-    .kpi-value { font-size:26px; font-weight:600; color:var(--text); line-height:1; }
-    .kpi-sub { font-size:11px; color:var(--text2); margin-top:4px; }
-    .kpi-card.green .kpi-value { color:var(--green); }
-    .kpi-card.red   .kpi-value { color:var(--red); }
-    .kpi-card.amber .kpi-value { color:var(--amber); }
-    .kpi-card.blue  .kpi-value { color:var(--accent); }
-
-    .filters-bar { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
-    .filter-group { display:flex; flex-direction:column; gap:3px; }
-    .filter-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; }
-    .filters-bar select, .filters-bar input[type="search"] {
-      background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius);
-      color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
-      padding:6px 10px; outline:none; transition:border-color .2s;
-    }
-    .filters-bar select:focus, .filters-bar input:focus { border-color:var(--accent); }
-
-    /* Multi-bloque dropdown */
-    .bloque-picker { position:relative; }
-    .bloque-trigger {
-      background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius);
-      color:var(--text); font-size:13px; padding:6px 32px 6px 10px;
-      cursor:pointer; white-space:nowrap; min-width:190px; user-select:none;
-      transition:border-color .2s; display:flex; align-items:center; gap:6px; position:relative;
-    }
-    .bloque-trigger:hover { border-color:var(--accent); }
-    .bloque-trigger .arrow { position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:10px; color:var(--text2); transition:transform .2s; }
-    .bloque-trigger.open .arrow { transform:translateY(-50%) rotate(180deg); }
-    .bloque-count { background:var(--accent); color:#fff; font-size:10px; font-weight:600; border-radius:10px; padding:1px 6px; }
-    .bloque-dropdown {
-      position:absolute; top:calc(100% + 4px); left:0; z-index:300;
-      background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius-lg);
-      padding:8px; min-width:220px; max-height:320px; overflow-y:auto;
-      box-shadow:0 8px 24px rgba(0,0,0,.5); display:none;
-    }
-    .bloque-dropdown.open { display:block; }
-    .bloque-opt {
-      display:flex; align-items:center; gap:8px; padding:7px 10px;
-      border-radius:var(--radius); cursor:pointer; font-size:13px; color:var(--text); transition:background .15s;
-    }
-    .bloque-opt:hover { background:var(--bg3); }
-    .bloque-opt input[type=checkbox] { accent-color:var(--accent); width:14px; height:14px; cursor:pointer; }
-    .bloque-opt.selected { color:var(--accent); }
-    .bloque-dropdown-actions { display:flex; gap:6px; padding:8px 4px 4px; border-top:1px solid var(--border); margin-top:4px; }
-    .dd-btn { background:transparent; border:1px solid var(--border2); border-radius:var(--radius); color:var(--text2); font-size:11px; padding:4px 10px; cursor:pointer; transition:all .15s; flex:1; }
-    .dd-btn:hover { border-color:var(--accent); color:var(--accent); }
-
-    .filter-search { flex:1; min-width:180px; }
-    .btn-reset { background:transparent; border:1px solid var(--border2); border-radius:var(--radius); color:var(--text2); font-size:12px; padding:6px 14px; cursor:pointer; transition:all .2s; }
-    .btn-reset:hover { border-color:var(--accent); color:var(--accent); }
-    .filter-count { font-size:12px; color:var(--text2); padding-bottom:2px; }
-
-    /* Charts grid */
-    .charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:1.5rem; }
-    .chart-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; }
-    .chart-card.full { grid-column:1/-1; }
-    .chart-title { font-size:12px; font-weight:500; color:var(--text2); text-transform:uppercase; letter-spacing:.06em; margin-bottom:1rem; }
-    .chart-wrap { position:relative; width:100%; }
-
-    /* Pastel grid para detalle por bloque */
-    .pie-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:16px; }
-    .pie-item { display:flex; flex-direction:column; align-items:center; gap:8px; }
-    .pie-item-title { font-size:12px; font-weight:500; color:var(--text); }
-    .pie-item-sub { font-size:11px; color:var(--text2); text-align:center; }
-
+    .header-logo { width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center; }
+    .header-logo svg { width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2; }
+    .header-title { font-size:15px;font-weight:600; }
+    .header-sub { font-size:12px;color:var(--text2); }
+    .status-dot { width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;display:inline-block;margin-right:6px; }
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .header-status { font-size:12px;color:var(--text2); }
+    .page { max-width:1400px;margin:0 auto;padding:1.5rem 2rem 3rem; }
+    .loading-screen { display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:5rem 2rem;color:var(--text2); }
+    .spinner { width:36px;height:36px;border:3px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite; }
+    .error-box { background:var(--red-bg);border:1px solid rgba(248,113,113,.3);border-radius:var(--radius);padding:1.25rem 1.5rem;color:var(--red);font-size:13px;margin:2rem 0; }
+    /* KPIs */
+    .kpi-row { display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:1.5rem; }
+    .kpi-card { background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.25rem; }
+    .kpi-label { font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px; }
+    .kpi-value { font-size:26px;font-weight:600;line-height:1; }
+    .kpi-sub { font-size:11px;color:var(--text2);margin-top:4px; }
+    .kpi-card.green .kpi-value{color:var(--green)}.kpi-card.red .kpi-value{color:var(--red)}.kpi-card.amber .kpi-value{color:var(--amber)}.kpi-card.blue .kpi-value{color:var(--accent)}
+    /* Filters */
+    .filters-bar { background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end; }
+    .filter-group { display:flex;flex-direction:column;gap:3px; }
+    .filter-label { font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em; }
+    .filters-bar select,.filters-bar input[type=search] { background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:6px 10px;outline:none;transition:border-color .2s; }
+    .filters-bar select:focus,.filters-bar input:focus{border-color:var(--accent)}
+    /* Multi bloque */
+    .bloque-picker{position:relative}
+    .bloque-trigger{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;padding:6px 32px 6px 10px;cursor:pointer;white-space:nowrap;min-width:190px;user-select:none;transition:border-color .2s;display:flex;align-items:center;gap:6px;position:relative;}
+    .bloque-trigger:hover{border-color:var(--accent)}
+    .bloque-trigger .arrow{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text2);transition:transform .2s}
+    .bloque-trigger.open .arrow{transform:translateY(-50%) rotate(180deg)}
+    .bloque-count{background:var(--accent);color:#fff;font-size:10px;font-weight:600;border-radius:10px;padding:1px 6px}
+    .bloque-dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:300;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:8px;min-width:220px;max-height:320px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.5);display:none}
+    .bloque-dropdown.open{display:block}
+    .bloque-opt{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text);transition:background .15s}
+    .bloque-opt:hover{background:var(--bg3)}
+    .bloque-opt input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px;cursor:pointer}
+    .bloque-opt.selected{color:var(--accent)}
+    .bloque-dd-actions{display:flex;gap:6px;padding:8px 4px 4px;border-top:1px solid var(--border);margin-top:4px}
+    .dd-btn{background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text2);font-size:11px;padding:4px 10px;cursor:pointer;transition:all .15s;flex:1}
+    .dd-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .filter-search{flex:1;min-width:180px}
+    .btn-reset{background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text2);font-size:12px;padding:6px 14px;cursor:pointer;transition:all .2s}
+    .btn-reset:hover{border-color:var(--accent);color:var(--accent)}
+    .filter-count{font-size:12px;color:var(--text2);padding-bottom:2px}
+    /* Charts */
+    .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
+    .chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+    .chart-card.full{grid-column:1/-1}
+    .chart-title{font-size:12px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem}
+    .chart-wrap{position:relative;width:100%}
+    /* Pie grid — un pastel chico por bloque */
+    .pie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px}
+    .pie-item{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .pie-item-title{font-size:13px;font-weight:500;color:var(--text)}
+    .pie-legend{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--text2);width:100%;padding:0 4px}
+    .pie-legend-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
+    .pie-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .pie-pct{font-weight:600;color:var(--green)}
     /* Table */
-    .table-section { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; }
-    .table-header { padding:1rem 1.25rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
-    .table-header-title { font-size:13px; font-weight:500; }
-    .table-scroll { overflow-x:auto; }
-    table { width:100%; border-collapse:collapse; min-width:700px; }
-    thead th { background:var(--bg3); padding:9px 14px; text-align:left; font-size:11px; font-weight:500; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; border-bottom:1px solid var(--border); }
-    tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
-    tbody tr:last-child { border-bottom:none; }
-    tbody tr:hover { background:var(--bg3); }
-    tbody td { padding:9px 14px; font-size:13px; color:var(--text); white-space:nowrap; }
-    td.mono { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text2); }
-    td.nombre-cell { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    td.num { text-align:right; font-variant-numeric:tabular-nums; }
-    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:500; }
-    .badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
-    .badge-ok { background:var(--green-bg); color:var(--green); }
-    .badge-no { background:var(--red-bg); color:var(--red); }
-    .badge-nd { background:rgba(139,146,168,.12); color:var(--text2); }
-
-    .pagination { display:flex; align-items:center; justify-content:space-between; padding:.85rem 1.25rem; border-top:1px solid var(--border); font-size:12px; color:var(--text2); }
-    .pg-controls { display:flex; gap:4px; }
-    .pg-btn { background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius); color:var(--text2); font-size:12px; padding:5px 11px; cursor:pointer; transition:all .15s; }
-    .pg-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
-    .pg-btn:disabled { opacity:.35; cursor:default; }
-    .pg-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
-
-    @media(max-width:768px) {
-      .page { padding:1rem; }
-      .charts-grid { grid-template-columns:1fr; }
-      .header { padding:0 1rem; }
-      .kpi-row { grid-template-columns:repeat(2,1fr); }
-      .pie-grid { grid-template-columns:repeat(2,1fr); }
-    }
+    .table-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+    .table-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .table-header-title{font-size:13px;font-weight:500}
+    .table-scroll{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;min-width:700px}
+    thead th{background:var(--bg3);padding:9px 14px;text-align:left;font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;border-bottom:1px solid var(--border)}
+    tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+    tbody tr:last-child{border-bottom:none}
+    tbody tr:hover{background:var(--bg3)}
+    tbody td{padding:9px 14px;font-size:13px;color:var(--text);white-space:nowrap}
+    td.mono{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2)}
+    td.nc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    td.num{text-align:right;font-variant-numeric:tabular-nums}
+    .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
+    .bdot{width:5px;height:5px;border-radius:50%;background:currentColor}
+    .bok{background:var(--green-bg);color:var(--green)}.bno{background:var(--red-bg);color:var(--red)}.bnd{background:rgba(139,146,168,.12);color:var(--text2)}
+    /* Pagination */
+    .pagination{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.25rem;border-top:1px solid var(--border);font-size:12px;color:var(--text2)}
+    .pg-controls{display:flex;gap:4px}
+    .pg-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text2);font-size:12px;padding:5px 11px;cursor:pointer;transition:all .15s}
+    .pg-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+    .pg-btn:disabled{opacity:.35;cursor:default}
+    .pg-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    @media(max-width:768px){.page{padding:1rem}.charts-grid{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}.pie-grid{grid-template-columns:repeat(2,1fr)}}
   </style>
 </head>
 <body>
-
 <header class="header">
   <div class="header-brand">
-    <div class="header-logo">
-      <svg viewBox="0 0 24 24"><path d="M1 6l10.5 6L22 6M1 6v12l10.5 6L22 18V6"/></svg>
-    </div>
+    <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M1 6l10.5 6L22 6M1 6v12l10.5 6L22 18V6"/></svg></div>
     <div>
       <div class="header-title">Ancho de Banda 3.0</div>
       <div class="header-sub">MINEDUCYT — Monitoreo de conectividad escolar</div>
     </div>
   </div>
-  <div class="header-status">
-    <span class="status-dot"></span>
-    <span id="header-status-text">Cargando...</span>
-  </div>
+  <div class="header-status"><span class="status-dot"></span><span id="hst">Cargando...</span></div>
 </header>
 
 <div class="page">
-  <div id="loading" class="loading-screen">
-    <div class="spinner"></div>
-    <span>Cargando datos desde la API...</span>
-  </div>
+  <div id="loading" class="loading-screen"><div class="spinner"></div><span>Cargando datos...</span></div>
   <div id="error-box" class="error-box" style="display:none"></div>
-
   <div id="dashboard" style="display:none">
 
     <div class="kpi-row" id="kpi-row"></div>
 
-    <!-- Filters -->
     <div class="filters-bar">
       <div class="filter-group">
         <span class="filter-label">Bloque(s)</span>
-        <div class="bloque-picker" id="bloque-picker">
-          <div class="bloque-trigger" id="bloque-trigger" onclick="toggleDropdown()">
-            <span id="bloque-trigger-text">Todos los bloques</span>
-            <span class="bloque-count" id="bloque-count" style="display:none"></span>
+        <div class="bloque-picker" id="bp">
+          <div class="bloque-trigger" id="bt" onclick="toggleDD()">
+            <span id="bt-text">Todos los bloques</span>
+            <span class="bloque-count" id="bc" style="display:none"></span>
             <span class="arrow">▼</span>
           </div>
-          <div class="bloque-dropdown" id="bloque-dropdown">
-            <div id="bloque-opts"></div>
-            <div class="bloque-dropdown-actions">
-              <button class="dd-btn" onclick="selectAllBloques()">Todos</button>
+          <div class="bloque-dropdown" id="bdd">
+            <div id="bopts"></div>
+            <div class="bloque-dd-actions">
+              <button class="dd-btn" onclick="allBloques()">Todos</button>
               <button class="dd-btn" onclick="clearBloques()">Limpiar</button>
             </div>
           </div>
@@ -191,431 +144,297 @@
       </div>
       <div class="filter-group">
         <span class="filter-label">Cumplimiento</span>
-        <select id="f-cumple">
-          <option value="">Todos</option>
-          <option value="Cumple">✓ Cumple</option>
-          <option value="No cumple">✗ No cumple</option>
-          <option value="Sin dato">— Sin dato</option>
-        </select>
+        <select id="fc"><option value="">Todos</option><option value="Cumple">✓ Cumple</option><option value="No cumple">✗ No cumple</option><option value="Sin dato">— Sin dato</option></select>
       </div>
       <div class="filter-group">
         <span class="filter-label">Zona</span>
-        <select id="f-zona"><option value="">Todas</option></select>
+        <select id="fz"><option value="">Todas</option></select>
       </div>
       <div class="filter-group">
         <span class="filter-label">Departamento</span>
-        <select id="f-depto"><option value="">Todos</option></select>
+        <select id="fd"><option value="">Todos</option></select>
       </div>
       <div class="filter-group filter-search">
         <span class="filter-label">Buscar</span>
-        <input type="search" id="f-search" placeholder="Nombre, código, municipio…" />
+        <input type="search" id="fs" placeholder="Nombre, código, municipio…" />
       </div>
-      <button class="btn-reset" onclick="resetFilters()">Limpiar todo</button>
-      <span class="filter-count" id="filter-count"></span>
+      <button class="btn-reset" onclick="resetAll()">Limpiar todo</button>
+      <span class="filter-count" id="fcount"></span>
     </div>
 
-    <!-- 4 gráficos de BARRAS -->
+    <!-- BARRAS: 4 gráficos -->
     <div class="charts-grid">
+
       <div class="chart-card">
         <div class="chart-title">Cumplimiento general</div>
-        <div class="chart-wrap" style="height:260px">
-          <canvas id="chart-cumplimiento" role="img" aria-label="Cumplimiento general"></canvas>
-        </div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Distribución por zona</div>
-        <div class="chart-wrap" style="height:260px">
-          <canvas id="chart-zona" role="img" aria-label="Distribución por zona"></canvas>
-        </div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Centros por bloque</div>
-        <div class="chart-wrap" style="height:260px">
-          <canvas id="chart-bloque-bar" role="img" aria-label="Centros por bloque"></canvas>
-        </div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Centros por departamento</div>
-        <div class="chart-wrap" style="height:260px">
-          <canvas id="chart-depto" role="img" aria-label="Centros por departamento"></canvas>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="c-cumpl" role="img" aria-label="Cumplimiento general"></canvas>
         </div>
       </div>
 
-      <!-- PASTELES por bloque (detalle cumplimiento) -->
+      <div class="chart-card">
+        <div class="chart-title">Centros por zona</div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="c-zona" role="img" aria-label="Centros por zona"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Cumple vs No cumple por bloque</div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="c-bloque" role="img" aria-label="Cumplimiento por bloque"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Centros por departamento</div>
+        <div class="chart-wrap" id="depto-wrap" style="height:240px">
+          <canvas id="c-depto" role="img" aria-label="Centros por departamento"></canvas>
+        </div>
+      </div>
+
+      <!-- PASTELES: uno por bloque -->
       <div class="chart-card full">
         <div class="chart-title">Detalle de cumplimiento por bloque</div>
         <div class="pie-grid" id="pie-grid"></div>
       </div>
+
     </div>
 
-    <!-- Table -->
+    <!-- Tabla -->
     <div class="table-section">
       <div class="table-header">
         <span class="table-header-title">Registros detallados</span>
-        <span id="table-info" style="font-size:12px;color:var(--text2)"></span>
+        <span id="tinfo" style="font-size:12px;color:var(--text2)"></span>
       </div>
       <div class="table-scroll">
         <table>
-          <thead>
-            <tr>
-              <th>Código</th><th>Centro educativo</th><th>Municipio</th>
-              <th>Departamento</th><th>Bloque</th><th>Zona</th>
-              <th style="text-align:right">Matrícula</th>
-              <th style="text-align:right">OS (Mbps)</th>
-              <th style="text-align:right">ES</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
+          <thead><tr>
+            <th>Código</th><th>Centro educativo</th><th>Municipio</th><th>Departamento</th>
+            <th>Bloque</th><th>Zona</th><th style="text-align:right">Matrícula</th>
+            <th style="text-align:right">OS (Mbps)</th><th style="text-align:right">ES</th><th>Estado</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
         </table>
       </div>
-      <div class="pagination">
-        <span id="pg-info"></span>
-        <div class="pg-controls" id="pg-controls"></div>
-      </div>
+      <div class="pagination"><span id="pginfo"></span><div class="pg-controls" id="pgctrl"></div></div>
     </div>
 
   </div>
 </div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycby7aWrOjmrDChqx0GyK-gVi2iKH0hT_c8wI2_nAE-DoF3IYgSPR4f071xr_bbdSMzxFLg/exec';
-const PAGE_SIZE = 25;
-const PIE_COLORS = ['#4f7cf7','#34d399','#fbbf24','#f87171','#a78bfa','#fb923c','#22d3ee','#e879f9','#84cc16','#f43f5e','#14b8a6','#f59e0b'];
-const GRID_COLORS = { 'Cumple':'rgba(255,255,255,0.04)', default:'rgba(255,255,255,0.04)' };
+const API = 'https://script.google.com/macros/s/AKfycby7aWrOjmrDChqx0GyK-gVi2iKH0hT_c8wI2_nAE-DoF3IYgSPR4f071xr_bbdSMzxFLg/exec';
+const PS = 25;
+const PCOLS = ['#4f7cf7','#34d399','#fbbf24','#f87171','#a78bfa','#fb923c','#22d3ee','#e879f9','#84cc16','#f43f5e','#14b8a6','#f59e0b','#60a5fa','#4ade80'];
 
-let allData = [], filtered = [], currentPage = 1;
-let charts = {}, pieCharts = {};
-let selectedBloques = new Set();
+let allData=[], filtered=[], page=1, charts={}, pieCharts={}, selBloques=new Set();
 
-async function fetchData() {
-  const res = await fetch(API_URL);
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  const json = await res.json();
-  if (json.status === 'error') throw new Error(json.message);
-  return json.data || [];
-}
-
-async function init() {
-  try {
-    allData = await fetchData();
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    document.getElementById('header-status-text').textContent = allData.length.toLocaleString() + ' centros cargados';
-    populateFilters();
-    filtered = [...allData];
+async function init(){
+  try{
+    const r=await fetch(API); if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json(); if(j.status==='error') throw new Error(j.message);
+    allData=j.data||[];
+    document.getElementById('loading').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('hst').textContent=allData.length.toLocaleString()+' centros cargados';
+    buildFilters();
+    filtered=[...allData];
     renderAll();
-    ['f-cumple','f-zona','f-depto'].forEach(id =>
-      document.getElementById(id).addEventListener('change', applyFilters)
-    );
-    document.getElementById('f-search').addEventListener('input', applyFilters);
-    document.addEventListener('click', e => {
-      if (!document.getElementById('bloque-picker').contains(e.target)) closeDropdown();
-    });
-  } catch(e) {
-    document.getElementById('loading').style.display = 'none';
-    const eb = document.getElementById('error-box');
-    eb.style.display = 'block';
-    eb.textContent = '⚠ Error al cargar la API: ' + e.message;
-    document.getElementById('header-status-text').textContent = 'Error de conexión';
+    ['fc','fz','fd'].forEach(id=>document.getElementById(id).addEventListener('change',applyFilters));
+    document.getElementById('fs').addEventListener('input',applyFilters);
+    document.addEventListener('click',e=>{ if(!document.getElementById('bp').contains(e.target)) closeDD(); });
+  }catch(e){
+    document.getElementById('loading').style.display='none';
+    const eb=document.getElementById('error-box'); eb.style.display='block'; eb.textContent='⚠ Error: '+e.message;
+    document.getElementById('hst').textContent='Error de conexión';
   }
 }
 
-/* ── Dropdown ── */
-function toggleDropdown() {
-  const dd = document.getElementById('bloque-dropdown');
-  const tr = document.getElementById('bloque-trigger');
-  const open = dd.classList.toggle('open');
-  tr.classList.toggle('open', open);
-}
-function closeDropdown() {
-  document.getElementById('bloque-dropdown').classList.remove('open');
-  document.getElementById('bloque-trigger').classList.remove('open');
-}
-function toggleBloque(b) {
-  if (selectedBloques.has(b)) selectedBloques.delete(b);
-  else selectedBloques.add(b);
-  updateBloqueUI(); applyFilters();
-}
-function selectAllBloques() { selectedBloques.clear(); updateBloqueUI(); applyFilters(); }
-function clearBloques()     { selectedBloques.clear(); updateBloqueUI(); applyFilters(); }
-function updateBloqueUI() {
-  const n = selectedBloques.size;
-  document.getElementById('bloque-trigger-text').textContent = n === 0 ? 'Todos los bloques' : n === 1 ? [...selectedBloques][0] : n + ' bloques';
-  const badge = document.getElementById('bloque-count');
-  badge.textContent = n; badge.style.display = n ? 'inline' : 'none';
-  document.querySelectorAll('.bloque-opt').forEach(opt => {
-    const b = opt.dataset.bloque;
-    opt.querySelector('input').checked = selectedBloques.has(b);
-    opt.classList.toggle('selected', selectedBloques.has(b));
-  });
+/* ── Dropdown multi-bloque ── */
+function toggleDD(){ const dd=document.getElementById('bdd'),tr=document.getElementById('bt'); const o=dd.classList.toggle('open'); tr.classList.toggle('open',o); }
+function closeDD(){ document.getElementById('bdd').classList.remove('open'); document.getElementById('bt').classList.remove('open'); }
+function toggleB(b){ selBloques.has(b)?selBloques.delete(b):selBloques.add(b); syncBUI(); applyFilters(); }
+function allBloques(){ selBloques.clear(); syncBUI(); applyFilters(); }
+function clearBloques(){ selBloques.clear(); syncBUI(); applyFilters(); }
+function syncBUI(){
+  const n=selBloques.size;
+  document.getElementById('bt-text').textContent=n===0?'Todos los bloques':n===1?[...selBloques][0]:n+' bloques';
+  const badge=document.getElementById('bc'); badge.textContent=n; badge.style.display=n?'inline':'none';
+  document.querySelectorAll('.bloque-opt').forEach(o=>{ const b=o.dataset.b; o.querySelector('input').checked=selBloques.has(b); o.classList.toggle('selected',selBloques.has(b)); });
 }
 
-/* ── Populate ── */
-function populateFilters() {
-  const unique = k => [...new Set(allData.map(r => r[k]).filter(Boolean))].sort();
-  const bloques = unique('bloque');
-  document.getElementById('bloque-opts').innerHTML = bloques.map(b =>
-    `<div class="bloque-opt" data-bloque="${b}" onclick="toggleBloque('${b}')">
-      <input type="checkbox" onclick="event.stopPropagation();toggleBloque('${b}')" />
-      <span>${b}</span>
-    </div>`).join('');
-  fill('f-zona',  unique('zona'));
-  fill('f-depto', unique('departamento'));
+function buildFilters(){
+  const uniq=k=>[...new Set(allData.map(r=>r[k]).filter(Boolean))].sort();
+  const bloques=uniq('bloque');
+  document.getElementById('bopts').innerHTML=bloques.map(b=>
+    `<div class="bloque-opt" data-b="${b}" onclick="toggleB('${b}')"><input type="checkbox" onclick="event.stopPropagation();toggleB('${b}')"/><span>${b}</span></div>`
+  ).join('');
+  fillSel('fz',uniq('zona'));
+  fillSel('fd',uniq('departamento'));
 }
-function fill(id, values) {
-  const sel = document.getElementById(id);
-  values.forEach(v => { const o = document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
-}
+function fillSel(id,vals){ const s=document.getElementById(id); vals.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);}); }
 
-/* ── Filters ── */
-function applyFilters() {
-  const cumple = document.getElementById('f-cumple').value;
-  const zona   = document.getElementById('f-zona').value;
-  const depto  = document.getElementById('f-depto').value;
-  const search = document.getElementById('f-search').value.toLowerCase().trim();
-  filtered = allData.filter(r => {
-    if (selectedBloques.size > 0 && !selectedBloques.has(r.bloque)) return false;
-    if (cumple && r.cumple !== cumple) return false;
-    if (zona   && r.zona   !== zona)   return false;
-    if (depto  && r.departamento !== depto) return false;
-    if (search && !(r.nombre+r.codigo+r.municipio).toLowerCase().includes(search)) return false;
+function applyFilters(){
+  const cumple=document.getElementById('fc').value, zona=document.getElementById('fz').value,
+        depto=document.getElementById('fd').value, q=document.getElementById('fs').value.toLowerCase().trim();
+  filtered=allData.filter(r=>{
+    if(selBloques.size>0&&!selBloques.has(r.bloque)) return false;
+    if(cumple&&r.cumple!==cumple) return false;
+    if(zona&&r.zona!==zona) return false;
+    if(depto&&r.departamento!==depto) return false;
+    if(q&&!(r.nombre+r.codigo+r.municipio).toLowerCase().includes(q)) return false;
     return true;
   });
-  currentPage = 1; renderAll();
+  page=1; renderAll();
 }
-function resetFilters() {
-  selectedBloques.clear(); updateBloqueUI();
-  ['f-cumple','f-zona','f-depto'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('f-search').value='';
-  filtered=[...allData]; currentPage=1; renderAll();
-}
+function resetAll(){ selBloques.clear(); syncBUI(); ['fc','fz','fd'].forEach(id=>document.getElementById(id).value=''); document.getElementById('fs').value=''; filtered=[...allData]; page=1; renderAll(); }
 
-/* ── Render all ── */
-function renderAll() {
-  const n=filtered.length, t=allData.length;
-  document.getElementById('filter-count').textContent =
-    n!==t ? n.toLocaleString()+' de '+t.toLocaleString()+' centros' : t.toLocaleString()+' centros';
-  renderKPIs(); renderBarCharts(); renderPieGrid(); renderTable();
+function renderAll(){
+  const n=filtered.length,t=allData.length;
+  document.getElementById('fcount').textContent=n!==t?n.toLocaleString()+' de '+t.toLocaleString()+' centros':t.toLocaleString()+' centros';
+  renderKPIs(); renderBars(); renderPies(); renderTable();
 }
 
 /* ── KPIs ── */
-function renderKPIs() {
-  const d=filtered, total=d.length;
-  const ok=d.filter(r=>r.cumple==='Cumple').length;
-  const no=d.filter(r=>r.cumple==='No cumple').length;
-  const sd=d.filter(r=>r.cumple==='Sin dato').length;
-  const pct=total?Math.round(ok/total*100):0;
-  const mat=d.reduce((s,r)=>s+(r.matricula||0),0);
-  const osR=d.filter(r=>r.os!=null);
-  const avgOS=osR.length?Math.round(osR.reduce((s,r)=>s+r.os,0)/osR.length):0;
+function renderKPIs(){
+  const d=filtered,tot=d.length,ok=d.filter(r=>r.cumple==='Cumple').length,no=d.filter(r=>r.cumple==='No cumple').length,sd=tot-ok-no;
+  const pct=tot?Math.round(ok/tot*100):0, mat=d.reduce((s,r)=>s+(r.matricula||0),0);
+  const osR=d.filter(r=>r.os!=null), avgOS=osR.length?Math.round(osR.reduce((s,r)=>s+r.os,0)/osR.length):0;
   document.getElementById('kpi-row').innerHTML=`
-    <div class="kpi-card blue"><div class="kpi-label">Total centros</div><div class="kpi-value">${total.toLocaleString()}</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Total centros</div><div class="kpi-value">${tot.toLocaleString()}</div></div>
     <div class="kpi-card green"><div class="kpi-label">Cumplen</div><div class="kpi-value">${ok.toLocaleString()}</div><div class="kpi-sub">${pct}% del total</div></div>
-    <div class="kpi-card red"><div class="kpi-label">No cumplen</div><div class="kpi-value">${no.toLocaleString()}</div><div class="kpi-sub">${total?Math.round(no/total*100):0}% del total</div></div>
+    <div class="kpi-card red"><div class="kpi-label">No cumplen</div><div class="kpi-value">${no.toLocaleString()}</div><div class="kpi-sub">${tot?Math.round(no/tot*100):0}% del total</div></div>
     <div class="kpi-card amber"><div class="kpi-label">Sin dato</div><div class="kpi-value">${sd.toLocaleString()}</div></div>
     <div class="kpi-card"><div class="kpi-label">Matrícula total</div><div class="kpi-value">${mat.toLocaleString()}</div></div>
     <div class="kpi-card"><div class="kpi-label">OS promedio</div><div class="kpi-value">${avgOS}</div><div class="kpi-sub">Mbps</div></div>`;
 }
 
-/* ── Bar charts (4 arriba) ── */
+/* ── BARRAS ── */
 function dc(id){ if(charts[id]){charts[id].destroy();delete charts[id];} }
+const AXES={ x:{ticks:{color:'#8b92a8',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}}, y:{ticks:{color:'#8b92a8',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}} };
+const pctTip=(vals)=>({ callbacks:{ label:ctx=>{ const t=vals.reduce((a,b)=>a+b,0); return ' '+ctx.parsed.y.toLocaleString()+' ('+Math.round(ctx.parsed.y/t*100)+'%)'; } } });
+const pctTipH=(vals)=>({ callbacks:{ label:ctx=>{ const t=vals.reduce((a,b)=>a+b,0); return ' '+ctx.parsed.x.toLocaleString()+' ('+Math.round(ctx.parsed.x/t*100)+'%)'; } } });
 
-const BAR_OPTS = (horizontal=false) => ({
-  responsive:true, maintainAspectRatio:false,
-  indexAxis: horizontal ? 'y' : 'x',
-  plugins:{ legend:{ display:false } },
-  scales:{
-    x:{ ticks:{color:'#8b92a8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.04)'} },
-    y:{ ticks:{color:'#8b92a8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.04)'} }
-  }
-});
+function renderBars(){
+  const d=filtered;
 
-function renderBarCharts() {
-  const d = filtered;
-
-  // 1. Cumplimiento general — barras horizontales
-  dc('cumplimiento');
-  const cumMap = {'Cumple':0,'No cumple':0,'Sin dato':0};
-  d.forEach(r=>{ if(cumMap[r.cumple]!==undefined) cumMap[r.cumple]++; });
-  charts['cumplimiento'] = new Chart(document.getElementById('chart-cumplimiento'),{
+  /* 1 — Cumplimiento general (barras horizontales) */
+  dc('cumpl');
+  const cVals=[d.filter(r=>r.cumple==='Cumple').length, d.filter(r=>r.cumple==='No cumple').length, d.filter(r=>r.cumple==='Sin dato').length];
+  charts['cumpl']=new Chart(document.getElementById('c-cumpl'),{
     type:'bar',
-    data:{
-      labels:Object.keys(cumMap),
-      datasets:[{
-        data:Object.values(cumMap),
-        backgroundColor:['#34d399','#f87171','#4b5270'],
-        borderRadius:6, borderWidth:0
-      }]
-    },
-    options:{
-      ...BAR_OPTS(true),
-      plugins:{ legend:{display:false},
-        tooltip:{callbacks:{label:ctx=>{
-          const t=Object.values(cumMap).reduce((a,b)=>a+b,0);
-          return ' '+ctx.parsed.x.toLocaleString()+' ('+Math.round(ctx.parsed.x/t*100)+'%)';
-        }}}
-      }
-    }
+    data:{ labels:['Cumple','No cumple','Sin dato'], datasets:[{data:cVals, backgroundColor:['#34d399','#f87171','#4b5270'], borderRadius:6, borderWidth:0}] },
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:pctTipH(cVals) }, scales:{ x:{...AXES.x}, y:{...AXES.y,grid:{display:false}} } }
   });
 
-  // 2. Zona — barras
+  /* 2 — Zona (barras verticales) */
   dc('zona');
-  const zonaMap={};
-  d.forEach(r=>{ const z=r.zona||'Sin dato'; zonaMap[z]=(zonaMap[z]||0)+1; });
-  const zonaLabels=Object.keys(zonaMap), zonaVals=Object.values(zonaMap);
-  charts['zona'] = new Chart(document.getElementById('chart-zona'),{
+  const zm={}; d.forEach(r=>{const z=r.zona||'Sin dato';zm[z]=(zm[z]||0)+1;});
+  const zL=Object.keys(zm), zV=Object.values(zm);
+  charts['zona']=new Chart(document.getElementById('c-zona'),{
     type:'bar',
-    data:{
-      labels:zonaLabels,
-      datasets:[{ data:zonaVals, backgroundColor:PIE_COLORS.slice(0,zonaLabels.length), borderRadius:6, borderWidth:0 }]
-    },
-    options:{
-      ...BAR_OPTS(),
-      plugins:{ legend:{display:false},
-        tooltip:{callbacks:{label:ctx=>{
-          const t=zonaVals.reduce((a,b)=>a+b,0);
-          return ' '+ctx.parsed.y.toLocaleString()+' ('+Math.round(ctx.parsed.y/t*100)+'%)';
-        }}}
-      }
+    data:{ labels:zL, datasets:[{data:zV, backgroundColor:PCOLS.slice(0,zL.length), borderRadius:6, borderWidth:0}] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:pctTip(zV) }, scales:{ x:{...AXES.x}, y:{...AXES.y} } }
+  });
+
+  /* 3 — Cumple vs No cumple por bloque (barras apiladas) */
+  dc('bloque');
+  const blqs=[...new Set(d.map(r=>r.bloque))].filter(b=>b&&b!=='Sin bloque').sort();
+  charts['bloque']=new Chart(document.getElementById('c-bloque'),{
+    type:'bar',
+    data:{ labels:blqs, datasets:[
+      {label:'Cumple',    data:blqs.map(b=>d.filter(r=>r.bloque===b&&r.cumple==='Cumple').length),    backgroundColor:'#34d399', borderWidth:0},
+      {label:'No cumple', data:blqs.map(b=>d.filter(r=>r.bloque===b&&r.cumple==='No cumple').length), backgroundColor:'#f87171', borderWidth:0},
+      {label:'Sin dato',  data:blqs.map(b=>d.filter(r=>r.bloque===b&&r.cumple==='Sin dato').length),  backgroundColor:'#4b5270', borderWidth:0}
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:true, position:'bottom', labels:{color:'#8b92a8',font:{size:11},padding:10,boxWidth:12,boxHeight:12} } },
+      scales:{ x:{stacked:true,...AXES.x}, y:{stacked:true,...AXES.y} }
     }
   });
 
-  // 3. Centros por bloque — barras apiladas (cumple/no cumple)
-  dc('bloque-bar');
-  const bloques=[...new Set(d.map(r=>r.bloque))].filter(b=>b&&b!=='Sin bloque').sort();
-  const bOk=bloques.map(b=>d.filter(r=>r.bloque===b&&r.cumple==='Cumple').length);
-  const bNo=bloques.map(b=>d.filter(r=>r.bloque===b&&r.cumple==='No cumple').length);
-  const bSd=bloques.map(b=>d.filter(r=>r.bloque===b&&r.cumple==='Sin dato').length);
-  charts['bloque-bar'] = new Chart(document.getElementById('chart-bloque-bar'),{
-    type:'bar',
-    data:{
-      labels:bloques,
-      datasets:[
-        {label:'Cumple',    data:bOk, backgroundColor:'#34d399', borderWidth:0},
-        {label:'No cumple', data:bNo, backgroundColor:'#f87171', borderWidth:0},
-        {label:'Sin dato',  data:bSd, backgroundColor:'#4b5270', borderWidth:0}
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{ display:true, position:'bottom', labels:{color:'#8b92a8',font:{size:11},padding:10,boxWidth:12,boxHeight:12} }
-      },
-      scales:{
-        x:{ stacked:true, ticks:{color:'#8b92a8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.04)'} },
-        y:{ stacked:true, ticks:{color:'#8b92a8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.04)'} }
-      }
-    }
-  });
-
-  // 4. Departamentos — barras horizontales
+  /* 4 — Departamentos (barras horizontales) */
   dc('depto');
-  const deptoMap={};
-  d.forEach(r=>{ const dep=r.departamento||'Sin dato'; deptoMap[dep]=(deptoMap[dep]||0)+1; });
-  const deptoE=Object.entries(deptoMap).sort((a,b)=>b[1]-a[1]).slice(0,14);
-  const deptoH = Math.max(220, deptoE.length*28+50);
-  document.getElementById('chart-depto').parentElement.style.height = deptoH+'px';
-  charts['depto'] = new Chart(document.getElementById('chart-depto'),{
+  const dm={}; d.forEach(r=>{const dep=r.departamento||'Sin dato';dm[dep]=(dm[dep]||0)+1;});
+  const de=Object.entries(dm).sort((a,b)=>b[1]-a[1]).slice(0,14);
+  const dH=Math.max(240,de.length*30+50);
+  document.getElementById('depto-wrap').style.height=dH+'px';
+  charts['depto']=new Chart(document.getElementById('c-depto'),{
     type:'bar',
-    data:{
-      labels:deptoE.map(d=>d[0]),
-      datasets:[{ data:deptoE.map(d=>d[1]), backgroundColor:'#a78bfa', borderRadius:4, borderWidth:0 }]
-    },
-    options:{
-      indexAxis:'y', responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false} },
-      scales:{
-        x:{ ticks:{color:'#8b92a8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.04)'} },
-        y:{ ticks:{color:'#8b92a8',font:{size:10}}, grid:{display:false} }
-      }
-    }
+    data:{ labels:de.map(x=>x[0]), datasets:[{data:de.map(x=>x[1]), backgroundColor:'#a78bfa', borderRadius:4, borderWidth:0}] },
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ x:{...AXES.x}, y:{...AXES.y,grid:{display:false}} } }
   });
 }
 
-/* ── Pie grid: un pastel por bloque ── */
-function renderPieGrid() {
-  const d = filtered;
-  const bloques = [...new Set(d.map(r=>r.bloque))].sort();
+/* ── PASTELES — uno por bloque ── */
+function renderPies(){
+  Object.values(pieCharts).forEach(c=>c.destroy()); pieCharts={};
+  const d=filtered;
+  const bloques=[...new Set(d.map(r=>r.bloque))].sort();
 
-  // Destruir pasteles viejos
-  Object.keys(pieCharts).forEach(k=>{ pieCharts[k].destroy(); delete pieCharts[k]; });
-
-  const grid = document.getElementById('pie-grid');
-  grid.innerHTML = bloques.map(b => {
-    const rows = d.filter(r=>r.bloque===b);
+  document.getElementById('pie-grid').innerHTML=bloques.map(b=>{
+    const rows=d.filter(r=>r.bloque===b);
     const ok=rows.filter(r=>r.cumple==='Cumple').length;
     const no=rows.filter(r=>r.cumple==='No cumple').length;
     const sd=rows.length-ok-no;
     const pct=rows.length?Math.round(ok/rows.length*100):0;
+    const id='pie_'+b.replace(/[\s\/]/g,'_');
     return `<div class="pie-item">
       <div class="pie-item-title">${b}</div>
-      <div style="position:relative;width:140px;height:140px">
-        <canvas id="pie-${b.replace(/\s/g,'_')}" role="img" aria-label="Pastel ${b}"></canvas>
+      <div style="position:relative;width:150px;height:150px">
+        <canvas id="${id}" role="img" aria-label="Pastel ${b}"></canvas>
       </div>
-      <div class="pie-item-sub">${ok} cumple · ${no} no · ${sd} s/d<br><strong style="color:var(--green)">${pct}%</strong> cumple</div>
+      <div class="pie-legend">
+        <div class="pie-legend-row"><span style="display:flex;align-items:center;gap:4px"><span class="pie-legend-dot" style="background:#34d399"></span>Cumple</span><span class="pie-pct">${ok} · ${pct}%</span></div>
+        <div class="pie-legend-row"><span style="display:flex;align-items:center;gap:4px"><span class="pie-legend-dot" style="background:#f87171"></span>No cumple</span><span style="color:var(--red)">${no}</span></div>
+        ${sd>0?`<div class="pie-legend-row"><span style="display:flex;align-items:center;gap:4px"><span class="pie-legend-dot" style="background:#4b5270"></span>Sin dato</span><span>${sd}</span></div>`:''}
+        <div class="pie-legend-row" style="border-top:1px solid var(--border);padding-top:3px;margin-top:3px"><span style="color:var(--text3)">Total</span><span>${rows.length}</span></div>
+      </div>
     </div>`;
   }).join('');
 
-  // Crear cada pastel
-  bloques.forEach(b => {
-    const rows = d.filter(r=>r.bloque===b);
+  bloques.forEach(b=>{
+    const rows=d.filter(r=>r.bloque===b);
     const ok=rows.filter(r=>r.cumple==='Cumple').length;
     const no=rows.filter(r=>r.cumple==='No cumple').length;
     const sd=rows.length-ok-no;
-    const canvasId = 'pie-'+b.replace(/\s/g,'_');
-    const canvas = document.getElementById(canvasId);
-    if (!canvas) return;
-    pieCharts[b] = new Chart(canvas,{
+    const id='pie_'+b.replace(/[\s\/]/g,'_');
+    const canvas=document.getElementById(id); if(!canvas) return;
+    pieCharts[b]=new Chart(canvas,{
       type:'pie',
-      data:{
-        labels:['Cumple','No cumple','Sin dato'],
-        datasets:[{
-          data:[ok,no,sd],
-          backgroundColor:['#34d399','#f87171','#4b5270'],
-          borderWidth:2, borderColor:'#171b26'
-        }]
-      },
-      options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{
-          legend:{display:false},
-          tooltip:{callbacks:{label:ctx=>{
-            const t=ok+no+sd;
-            return ' '+ctx.label+': '+ctx.parsed+' ('+Math.round(ctx.parsed/t*100)+'%)';
-          }}}
-        }
-      }
+      data:{ labels:['Cumple','No cumple','Sin dato'], datasets:[{data:[ok,no,sd], backgroundColor:['#34d399','#f87171','#4b5270'], borderWidth:2, borderColor:'#171b26'}] },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>{ const t=ok+no+sd; return ' '+ctx.label+': '+ctx.parsed+' ('+Math.round(ctx.parsed/(t||1)*100)+'%)'; }}}
+      }}
     });
   });
 }
 
-/* ── Table ── */
-function renderTable() {
-  const total=filtered.length, pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
-  currentPage=Math.min(currentPage,pages);
-  const slice=filtered.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE);
-  document.getElementById('table-info').textContent=total.toLocaleString()+' registros';
-  document.getElementById('table-body').innerHTML=slice.map(r=>{
-    const bc=r.cumple==='Cumple'?'badge-ok':r.cumple==='No cumple'?'badge-no':'badge-nd';
+/* ── Tabla ── */
+function renderTable(){
+  const tot=filtered.length, pages=Math.max(1,Math.ceil(tot/PS));
+  page=Math.min(page,pages);
+  const sl=filtered.slice((page-1)*PS,page*PS);
+  document.getElementById('tinfo').textContent=tot.toLocaleString()+' registros';
+  document.getElementById('tbody').innerHTML=sl.map(r=>{
+    const bc=r.cumple==='Cumple'?'bok':r.cumple==='No cumple'?'bno':'bnd';
     return `<tr>
-      <td class="mono">${r.codigo}</td>
-      <td class="nombre-cell" title="${r.nombre}">${r.nombre}</td>
+      <td class="mono">${r.codigo}</td><td class="nc" title="${r.nombre}">${r.nombre}</td>
       <td>${r.municipio}</td><td>${r.departamento}</td><td>${r.bloque}</td><td>${r.zona||'—'}</td>
       <td class="num">${r.matricula!=null?r.matricula.toLocaleString():'—'}</td>
       <td class="num">${r.os!=null?r.os.toLocaleString():'—'}</td>
       <td class="num">${r.es!=null?r.es.toLocaleString():'—'}</td>
-      <td><span class="badge ${bc}"><span class="badge-dot"></span>${r.cumple}</span></td>
+      <td><span class="badge ${bc}"><span class="bdot"></span>${r.cumple}</span></td>
     </tr>`;
   }).join('');
-  document.getElementById('pg-info').textContent='Página '+currentPage+' de '+pages;
-  let pgH=`<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-  const s=Math.max(1,currentPage-2), e=Math.min(pages,currentPage+2);
-  for(let i=s;i<=e;i++) pgH+=`<button class="pg-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
-  pgH+=`<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
-  document.getElementById('pg-controls').innerHTML=pgH;
+  document.getElementById('pginfo').textContent='Página '+page+' de '+pages;
+  let h=`<button class="pg-btn" onclick="gp(${page-1})" ${page===1?'disabled':''}>‹</button>`;
+  for(let i=Math.max(1,page-2);i<=Math.min(pages,page+2);i++) h+=`<button class="pg-btn ${i===page?'active':''}" onclick="gp(${i})">${i}</button>`;
+  h+=`<button class="pg-btn" onclick="gp(${page+1})" ${page===pages?'disabled':''}>›</button>`;
+  document.getElementById('pgctrl').innerHTML=h;
 }
-window.goPage=(p)=>{ currentPage=p; renderTable(); document.querySelector('.table-section').scrollIntoView({behavior:'smooth',block:'start'}); };
+window.gp=p=>{ page=p; renderTable(); document.querySelector('.table-section').scrollIntoView({behavior:'smooth',block:'start'}); };
 
 init();
 </script>
