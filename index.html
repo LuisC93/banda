@@ -8,307 +8,147 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:        #0f1117;
-      --bg2:       #171b26;
-      --bg3:       #1e2333;
-      --border:    rgba(255,255,255,0.08);
-      --border2:   rgba(255,255,255,0.14);
-      --text:      #e8eaf0;
-      --text2:     #8b92a8;
-      --text3:     #5a6075;
-      --accent:    #4f7cf7;
-      --green:     #34d399;
-      --green-bg:  rgba(52,211,153,0.12);
-      --red:       #f87171;
-      --red-bg:    rgba(248,113,113,0.12);
-      --amber:     #fbbf24;
-      --amber-bg:  rgba(251,191,36,0.12);
-      --radius:    10px;
-      --radius-lg: 14px;
+      --bg:#0f1117; --bg2:#171b26; --bg3:#1e2333;
+      --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
+      --text:#e8eaf0; --text2:#8b92a8; --text3:#5a6075;
+      --accent:#4f7cf7; --green:#34d399; --green-bg:rgba(52,211,153,0.12);
+      --red:#f87171; --red-bg:rgba(248,113,113,0.12);
+      --amber:#fbbf24; --amber-bg:rgba(251,191,36,0.12);
+      --radius:10px; --radius-lg:14px;
     }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; line-height:1.6; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      font-size: 14px;
-      line-height: 1.6;
-    }
+    /* Header */
+    .header { background:var(--bg2); border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:200; }
+    .header-brand { display:flex; align-items:center; gap:10px; }
+    .header-logo { width:32px; height:32px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+    .header-logo svg { width:18px; height:18px; stroke:#fff; fill:none; stroke-width:2; }
+    .header-title { font-size:15px; font-weight:600; }
+    .header-sub { font-size:12px; color:var(--text2); }
+    .status-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; display:inline-block; margin-right:6px; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .header-status { font-size:12px; color:var(--text2); }
 
-    /* ── Header ── */
-    .header {
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .header-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .header-logo {
-      width: 32px; height: 32px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .header-logo svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; }
-    .header-title { font-size: 15px; font-weight: 600; color: var(--text); }
-    .header-sub { font-size: 12px; color: var(--text2); }
-    .header-status {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: var(--text2);
-    }
-    .status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+    /* Page */
+    .page { max-width:1400px; margin:0 auto; padding:1.5rem 2rem 3rem; }
 
-    /* ── Layout ── */
-    .page { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+    /* Loading */
+    .loading-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:5rem 2rem; color:var(--text2); }
+    .spinner { width:36px; height:36px; border:3px solid var(--border2); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .error-box { background:var(--red-bg); border:1px solid rgba(248,113,113,.3); border-radius:var(--radius); padding:1.25rem 1.5rem; color:var(--red); font-size:13px; margin:2rem 0; }
 
-    /* ── Loading / Error ── */
-    .loading-screen {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 16px; padding: 5rem 2rem;
-      color: var(--text2);
-    }
-    .spinner {
-      width: 36px; height: 36px;
-      border: 3px solid var(--border2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .error-box {
-      background: var(--red-bg);
-      border: 1px solid rgba(248,113,113,0.3);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      color: var(--red);
-      font-size: 13px;
-      margin: 2rem 0;
-    }
+    /* KPIs */
+    .kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:1.5rem; }
+    .kpi-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.1rem 1.25rem; transition:border-color .2s; }
+    .kpi-card:hover { border-color:var(--border2); }
+    .kpi-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+    .kpi-value { font-size:26px; font-weight:600; color:var(--text); line-height:1; }
+    .kpi-sub { font-size:11px; color:var(--text2); margin-top:4px; }
+    .kpi-card.green .kpi-value { color:var(--green); }
+    .kpi-card.red   .kpi-value { color:var(--red); }
+    .kpi-card.amber .kpi-value { color:var(--amber); }
+    .kpi-card.blue  .kpi-value { color:var(--accent); }
 
-    /* ── KPI Cards ── */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-      margin-bottom: 1.5rem;
+    /* ── Multi-bloque filter ── */
+    .filters-bar { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:1.5rem; display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
+    .filter-group { display:flex; flex-direction:column; gap:3px; }
+    .filter-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; }
+    .filters-bar select, .filters-bar input[type="search"] {
+      background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius);
+      color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
+      padding:6px 10px; outline:none; transition:border-color .2s;
     }
-    .kpi-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 1.25rem;
-      transition: border-color 0.2s;
-    }
-    .kpi-card:hover { border-color: var(--border2); }
-    .kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-    .kpi-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
-    .kpi-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
-    .kpi-card.green .kpi-value { color: var(--green); }
-    .kpi-card.red   .kpi-value { color: var(--red); }
-    .kpi-card.amber .kpi-value { color: var(--amber); }
-    .kpi-card.blue  .kpi-value { color: var(--accent); }
+    .filters-bar select:focus, .filters-bar input:focus { border-color:var(--accent); }
 
-    /* ── Filters ── */
-    .filters-bar {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
+    /* Bloque multi-select custom */
+    .bloque-picker { position:relative; }
+    .bloque-trigger {
+      background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius);
+      color:var(--text); font-size:13px; padding:6px 32px 6px 10px;
+      cursor:pointer; white-space:nowrap; min-width:180px; user-select:none;
+      transition:border-color .2s; display:flex; align-items:center; gap:6px;
     }
-    .filter-group { display: flex; flex-direction: column; gap: 3px; }
-    .filter-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
-    .filters-bar select,
-    .filters-bar input[type="search"] {
-      background: var(--bg3);
-      border: 1px solid var(--border2);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      padding: 6px 10px;
-      outline: none;
-      transition: border-color 0.2s;
-      min-width: 130px;
-    }
-    .filters-bar select:focus,
-    .filters-bar input:focus { border-color: var(--accent); }
-    .filter-search { flex: 1; min-width: 180px; }
-    .btn-reset {
-      background: transparent;
-      border: 1px solid var(--border2);
-      border-radius: var(--radius);
-      color: var(--text2);
-      font-size: 12px;
-      padding: 6px 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      align-self: flex-end;
-    }
-    .btn-reset:hover { border-color: var(--accent); color: var(--accent); }
-    .filter-count {
-      margin-left: auto;
-      font-size: 12px;
-      color: var(--text2);
-      align-self: flex-end;
-      padding-bottom: 2px;
-    }
+    .bloque-trigger:hover { border-color:var(--accent); }
+    .bloque-trigger .arrow { position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:10px; color:var(--text2); transition:transform .2s; }
+    .bloque-trigger.open .arrow { transform:translateY(-50%) rotate(180deg); }
+    .bloque-count { background:var(--accent); color:#fff; font-size:10px; font-weight:600; border-radius:10px; padding:1px 6px; }
 
-    /* ── Charts grid ── */
-    .charts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 1.5rem;
+    .bloque-dropdown {
+      position:absolute; top:calc(100% + 4px); left:0; z-index:300;
+      background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius-lg);
+      padding:8px; min-width:220px; max-height:320px; overflow-y:auto;
+      box-shadow:0 8px 24px rgba(0,0,0,.5);
+      display:none;
     }
-    .chart-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
+    .bloque-dropdown.open { display:block; }
+    .bloque-opt {
+      display:flex; align-items:center; gap:8px; padding:7px 10px;
+      border-radius:var(--radius); cursor:pointer; font-size:13px; color:var(--text);
+      transition:background .15s;
     }
-    .chart-card.full { grid-column: 1 / -1; }
-    .chart-title { font-size: 12px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
-    .chart-wrap { position: relative; width: 100%; }
-    .legend-row {
-      display: flex; flex-wrap: wrap; gap: 14px;
-      margin-bottom: 10px; font-size: 12px; color: var(--text2);
-    }
-    .legend-item { display: flex; align-items: center; gap: 5px; }
-    .legend-sq { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .bloque-opt:hover { background:var(--bg3); }
+    .bloque-opt input[type=checkbox] { accent-color:var(--accent); width:14px; height:14px; cursor:pointer; }
+    .bloque-opt.selected { color:var(--accent); }
+    .bloque-dropdown-actions { display:flex; gap:6px; padding:8px 4px 4px; border-top:1px solid var(--border); margin-top:4px; }
+    .dd-btn { background:transparent; border:1px solid var(--border2); border-radius:var(--radius); color:var(--text2); font-size:11px; padding:4px 10px; cursor:pointer; transition:all .15s; flex:1; }
+    .dd-btn:hover { border-color:var(--accent); color:var(--accent); }
 
-    /* ── Bloques progress ── */
-    .bloque-list { display: flex; flex-direction: column; gap: 10px; }
-    .bloque-row { display: flex; flex-direction: column; gap: 4px; }
-    .bloque-header { display: flex; justify-content: space-between; font-size: 12px; }
-    .bloque-name { font-weight: 500; color: var(--text); }
-    .bloque-stats { color: var(--text2); }
-    .bloque-bar-bg { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; display: flex; }
-    .bloque-seg { height: 100%; transition: width 0.5s ease; }
+    .filter-search { flex:1; min-width:180px; }
+    .btn-reset { background:transparent; border:1px solid var(--border2); border-radius:var(--radius); color:var(--text2); font-size:12px; padding:6px 14px; cursor:pointer; transition:all .2s; }
+    .btn-reset:hover { border-color:var(--accent); color:var(--accent); }
+    .filter-count { font-size:12px; color:var(--text2); padding-bottom:2px; }
 
-    /* ── Table ── */
-    .table-section {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-    .table-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .table-header-title { font-size: 13px; font-weight: 500; color: var(--text); }
-    .table-scroll { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 700px; }
-    thead th {
-      background: var(--bg3);
-      padding: 9px 14px;
-      text-align: left;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      white-space: nowrap;
-      border-bottom: 1px solid var(--border);
-    }
-    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: var(--bg3); }
-    tbody td {
-      padding: 9px 14px;
-      font-size: 13px;
-      color: var(--text);
-      white-space: nowrap;
-    }
-    td.mono {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text2);
-    }
-    td.nombre-cell {
-      max-width: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    /* Charts */
+    .charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:1.5rem; }
+    .chart-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; }
+    .chart-card.full { grid-column:1/-1; }
+    .chart-title { font-size:12px; font-weight:500; color:var(--text2); text-transform:uppercase; letter-spacing:.06em; margin-bottom:1rem; }
+    .chart-wrap { position:relative; width:100%; }
 
-    /* ── Badges ── */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .badge-ok    { background: var(--green-bg); color: var(--green); }
-    .badge-no    { background: var(--red-bg);   color: var(--red); }
-    .badge-nd    { background: rgba(139,146,168,0.12); color: var(--text2); }
-    .badge-dot   { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    /* Bloque detail */
+    .bloque-list { display:flex; flex-direction:column; gap:10px; }
+    .bloque-row { display:flex; flex-direction:column; gap:4px; }
+    .bloque-header { display:flex; justify-content:space-between; font-size:12px; }
+    .bloque-name { font-weight:500; color:var(--text); }
+    .bloque-stats { color:var(--text2); }
+    .bloque-bar-bg { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; display:flex; }
+    .bloque-seg { height:100%; transition:width .5s ease; }
 
-    /* ── Pagination ── */
-    .pagination {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.85rem 1.25rem;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--text2);
-    }
-    .pg-controls { display: flex; gap: 4px; }
-    .pg-btn {
-      background: var(--bg3);
-      border: 1px solid var(--border2);
-      border-radius: var(--radius);
-      color: var(--text2);
-      font-size: 12px;
-      padding: 5px 11px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .pg-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-    .pg-btn:disabled { opacity: 0.35; cursor: default; }
-    .pg-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    /* Table */
+    .table-section { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; }
+    .table-header { padding:1rem 1.25rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+    .table-header-title { font-size:13px; font-weight:500; }
+    .table-scroll { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:700px; }
+    thead th { background:var(--bg3); padding:9px 14px; text-align:left; font-size:11px; font-weight:500; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; border-bottom:1px solid var(--border); }
+    tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:var(--bg3); }
+    tbody td { padding:9px 14px; font-size:13px; color:var(--text); white-space:nowrap; }
+    td.mono { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text2); }
+    td.nombre-cell { max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    td.num { text-align:right; font-variant-numeric:tabular-nums; }
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:500; }
+    .badge-dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+    .badge-ok { background:var(--green-bg); color:var(--green); }
+    .badge-no { background:var(--red-bg); color:var(--red); }
+    .badge-nd { background:rgba(139,146,168,.12); color:var(--text2); }
 
-    /* ── Responsive ── */
-    @media (max-width: 768px) {
-      .page { padding: 1rem; }
-      .charts-grid { grid-template-columns: 1fr; }
-      .header { padding: 0 1rem; }
-      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    /* Pagination */
+    .pagination { display:flex; align-items:center; justify-content:space-between; padding:.85rem 1.25rem; border-top:1px solid var(--border); font-size:12px; color:var(--text2); }
+    .pg-controls { display:flex; gap:4px; }
+    .pg-btn { background:var(--bg3); border:1px solid var(--border2); border-radius:var(--radius); color:var(--text2); font-size:12px; padding:5px 11px; cursor:pointer; transition:all .15s; }
+    .pg-btn:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+    .pg-btn:disabled { opacity:.35; cursor:default; }
+    .pg-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+    @media(max-width:768px) {
+      .page { padding:1rem; }
+      .charts-grid { grid-template-columns:1fr; }
+      .header { padding:0 1rem; }
+      .kpi-row { grid-template-columns:repeat(2,1fr); }
     }
   </style>
 </head>
@@ -331,17 +171,12 @@
 </header>
 
 <div class="page">
-
-  <!-- Loading -->
   <div id="loading" class="loading-screen">
     <div class="spinner"></div>
     <span>Cargando datos desde la API...</span>
   </div>
-
-  <!-- Error -->
   <div id="error-box" class="error-box" style="display:none"></div>
 
-  <!-- Dashboard (hidden until data loads) -->
   <div id="dashboard" style="display:none">
 
     <!-- KPIs -->
@@ -349,10 +184,26 @@
 
     <!-- Filters -->
     <div class="filters-bar">
+
+      <!-- Multi-bloque -->
       <div class="filter-group">
-        <span class="filter-label">Bloque</span>
-        <select id="f-bloque"><option value="">Todos</option></select>
+        <span class="filter-label">Bloque(s)</span>
+        <div class="bloque-picker" id="bloque-picker">
+          <div class="bloque-trigger" id="bloque-trigger" onclick="toggleDropdown()">
+            <span id="bloque-trigger-text">Todos los bloques</span>
+            <span class="bloque-count" id="bloque-count" style="display:none"></span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="bloque-dropdown" id="bloque-dropdown">
+            <div id="bloque-opts"></div>
+            <div class="bloque-dropdown-actions">
+              <button class="dd-btn" onclick="selectAllBloques()">Todos</button>
+              <button class="dd-btn" onclick="clearBloques()">Limpiar</button>
+            </div>
+          </div>
+        </div>
       </div>
+
       <div class="filter-group">
         <span class="filter-label">Cumplimiento</span>
         <select id="f-cumple">
@@ -362,54 +213,53 @@
           <option value="Sin dato">— Sin dato</option>
         </select>
       </div>
+
       <div class="filter-group">
         <span class="filter-label">Zona</span>
         <select id="f-zona"><option value="">Todas</option></select>
       </div>
+
       <div class="filter-group">
         <span class="filter-label">Departamento</span>
         <select id="f-depto"><option value="">Todos</option></select>
       </div>
+
       <div class="filter-group filter-search">
         <span class="filter-label">Buscar</span>
         <input type="search" id="f-search" placeholder="Nombre, código, municipio…" />
       </div>
-      <button class="btn-reset" onclick="resetFilters()">Limpiar</button>
+
+      <button class="btn-reset" onclick="resetFilters()">Limpiar todo</button>
       <span class="filter-count" id="filter-count"></span>
     </div>
 
-    <!-- Charts -->
+    <!-- Charts (pasteles) -->
     <div class="charts-grid">
 
       <div class="chart-card">
-        <div class="chart-title">Cumplimiento por bloque</div>
-        <div class="legend-row">
-          <span class="legend-item"><span class="legend-sq" style="background:#34d399"></span>Cumple</span>
-          <span class="legend-item"><span class="legend-sq" style="background:#f87171"></span>No cumple</span>
-          <span class="legend-item"><span class="legend-sq" style="background:#4b5270"></span>Sin dato</span>
-        </div>
-        <div class="chart-wrap" style="height:240px">
-          <canvas id="chart-bloque" role="img" aria-label="Cumplimiento por bloque"></canvas>
+        <div class="chart-title">Cumplimiento general</div>
+        <div class="chart-wrap" style="height:260px">
+          <canvas id="chart-cumplimiento" role="img" aria-label="Cumplimiento general"></canvas>
         </div>
       </div>
 
       <div class="chart-card">
         <div class="chart-title">Distribución por zona</div>
-        <div class="chart-wrap" style="height:240px">
+        <div class="chart-wrap" style="height:260px">
           <canvas id="chart-zona" role="img" aria-label="Distribución por zona"></canvas>
         </div>
       </div>
 
       <div class="chart-card">
-        <div class="chart-title">OS asignado promedio por bloque (Mbps)</div>
-        <div class="chart-wrap" style="height:240px">
-          <canvas id="chart-os" role="img" aria-label="OS promedio por bloque"></canvas>
+        <div class="chart-title">Cumplimiento por bloque (pastel)</div>
+        <div class="chart-wrap" style="height:280px">
+          <canvas id="chart-bloque-pie" role="img" aria-label="Cumplimiento por bloque"></canvas>
         </div>
       </div>
 
       <div class="chart-card">
         <div class="chart-title">Centros por departamento</div>
-        <div class="chart-wrap" style="height:240px">
+        <div class="chart-wrap" style="height:280px">
           <canvas id="chart-depto" role="img" aria-label="Centros por departamento"></canvas>
         </div>
       </div>
@@ -431,12 +281,8 @@
         <table>
           <thead>
             <tr>
-              <th>Código</th>
-              <th>Centro educativo</th>
-              <th>Municipio</th>
-              <th>Departamento</th>
-              <th>Bloque</th>
-              <th>Zona</th>
+              <th>Código</th><th>Centro educativo</th><th>Municipio</th>
+              <th>Departamento</th><th>Bloque</th><th>Zona</th>
               <th style="text-align:right">Matrícula</th>
               <th style="text-align:right">OS (Mbps)</th>
               <th style="text-align:right">ES</th>
@@ -452,367 +298,335 @@
       </div>
     </div>
 
-  </div><!-- /dashboard -->
-</div><!-- /page -->
+  </div>
+</div>
 
 <script>
-  const API_URL = 'https://script.google.com/macros/s/AKfycby7aWrOjmrDChqx0GyK-gVi2iKH0hT_c8wI2_nAE-DoF3IYgSPR4f071xr_bbdSMzxFLg/exec';
-  const PAGE_SIZE = 25;
+const API_URL = 'https://script.google.com/macros/s/AKfycby7aWrOjmrDChqx0GyK-gVi2iKH0hT_c8wI2_nAE-DoF3IYgSPR4f071xr_bbdSMzxFLg/exec';
+const PAGE_SIZE = 25;
 
-  let allData = [];
-  let filtered = [];
-  let currentPage = 1;
-  let charts = {};
+let allData = [];
+let filtered = [];
+let currentPage = 1;
+let charts = {};
+let selectedBloques = new Set(); // vacío = todos
 
-  // ── Fetch ──────────────────────────────────────────────
-  async function fetchData() {
-    const res = await fetch(API_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    if (json.status === 'error') throw new Error(json.message);
-    return json.data || [];
+// Colores pasteles
+const PIE_COLORS  = ['#4f7cf7','#34d399','#fbbf24','#f87171','#a78bfa','#fb923c','#22d3ee','#e879f9','#84cc16','#f43f5e','#14b8a6','#f59e0b'];
+const CUMPLE_COLORS = { 'Cumple':'#34d399', 'No cumple':'#f87171', 'Sin dato':'#4b5270' };
+
+// ── Fetch ──
+async function fetchData() {
+  const res = await fetch(API_URL);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const json = await res.json();
+  if (json.status === 'error') throw new Error(json.message);
+  return json.data || [];
+}
+
+// ── Init ──
+async function init() {
+  try {
+    allData = await fetchData();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('header-status-text').textContent = allData.length.toLocaleString() + ' centros cargados';
+    populateFilters();
+    filtered = [...allData];
+    renderAll();
+    ['f-cumple','f-zona','f-depto'].forEach(id =>
+      document.getElementById(id).addEventListener('change', applyFilters)
+    );
+    document.getElementById('f-search').addEventListener('input', applyFilters);
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('bloque-picker').contains(e.target)) closeDropdown();
+    });
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    const eb = document.getElementById('error-box');
+    eb.style.display = 'block';
+    eb.textContent = '⚠ Error al cargar la API: ' + e.message;
+    document.getElementById('header-status-text').textContent = 'Error de conexión';
   }
+}
 
-  // ── Init ───────────────────────────────────────────────
-  async function init() {
-    try {
-      allData = await fetchData();
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      document.getElementById('header-status-text').textContent =
-        `${allData.length.toLocaleString()} centros cargados`;
+// ── Dropdown multi-bloque ──
+function toggleDropdown() {
+  const dd = document.getElementById('bloque-dropdown');
+  const trigger = document.getElementById('bloque-trigger');
+  const open = dd.classList.toggle('open');
+  trigger.classList.toggle('open', open);
+}
+function closeDropdown() {
+  document.getElementById('bloque-dropdown').classList.remove('open');
+  document.getElementById('bloque-trigger').classList.remove('open');
+}
+function toggleBloque(b) {
+  if (selectedBloques.has(b)) selectedBloques.delete(b);
+  else selectedBloques.add(b);
+  updateBloqueUI();
+  applyFilters();
+}
+function selectAllBloques() {
+  selectedBloques.clear();
+  updateBloqueUI();
+  applyFilters();
+}
+function clearBloques() {
+  selectedBloques.clear();
+  updateBloqueUI();
+  applyFilters();
+}
+function updateBloqueUI() {
+  const count = selectedBloques.size;
+  const trigText = document.getElementById('bloque-trigger-text');
+  const countBadge = document.getElementById('bloque-count');
+  if (count === 0) {
+    trigText.textContent = 'Todos los bloques';
+    countBadge.style.display = 'none';
+  } else {
+    trigText.textContent = count === 1 ? [...selectedBloques][0] : count + ' bloques';
+    countBadge.textContent = count;
+    countBadge.style.display = 'inline';
+  }
+  document.querySelectorAll('.bloque-opt').forEach(opt => {
+    const b = opt.dataset.bloque;
+    const checked = selectedBloques.size === 0 || selectedBloques.has(b);
+    opt.querySelector('input').checked = selectedBloques.has(b);
+    opt.classList.toggle('selected', selectedBloques.has(b));
+  });
+}
 
-      populateFilters();
-      filtered = [...allData];
-      renderAll();
+// ── Populate filters ──
+function populateFilters() {
+  const unique = (key) => [...new Set(allData.map(r => r[key]).filter(Boolean))].sort();
+  const bloques = unique('bloque');
 
-      ['f-bloque','f-cumple','f-zona','f-depto'].forEach(id =>
-        document.getElementById(id).addEventListener('change', applyFilters)
-      );
-      document.getElementById('f-search').addEventListener('input', applyFilters);
+  const optsEl = document.getElementById('bloque-opts');
+  optsEl.innerHTML = bloques.map(b => `
+    <div class="bloque-opt" data-bloque="${b}" onclick="toggleBloque('${b}')">
+      <input type="checkbox" onclick="event.stopPropagation(); toggleBloque('${b}')" />
+      <span>${b}</span>
+    </div>`).join('');
 
-    } catch (e) {
-      document.getElementById('loading').style.display = 'none';
-      const eb = document.getElementById('error-box');
-      eb.style.display = 'block';
-      eb.textContent = '⚠ Error al cargar la API: ' + e.message;
-      document.getElementById('header-status-text').textContent = 'Error de conexión';
+  fill('f-zona',  unique('zona'));
+  fill('f-depto', unique('departamento'));
+}
+function fill(id, values) {
+  const sel = document.getElementById(id);
+  values.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
+}
+
+// ── Filters ──
+function applyFilters() {
+  const cumple = document.getElementById('f-cumple').value;
+  const zona   = document.getElementById('f-zona').value;
+  const depto  = document.getElementById('f-depto').value;
+  const search = document.getElementById('f-search').value.toLowerCase().trim();
+
+  filtered = allData.filter(r => {
+    if (selectedBloques.size > 0 && !selectedBloques.has(r.bloque)) return false;
+    if (cumple && r.cumple !== cumple)           return false;
+    if (zona   && r.zona   !== zona)             return false;
+    if (depto  && r.departamento !== depto)      return false;
+    if (search) {
+      if (!(r.nombre + r.codigo + r.municipio).toLowerCase().includes(search)) return false;
+    }
+    return true;
+  });
+  currentPage = 1;
+  renderAll();
+}
+
+function resetFilters() {
+  selectedBloques.clear();
+  updateBloqueUI();
+  ['f-cumple','f-zona','f-depto'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-search').value = '';
+  filtered = [...allData];
+  currentPage = 1;
+  renderAll();
+}
+
+// ── Render all ──
+function renderAll() {
+  const n = filtered.length, t = allData.length;
+  document.getElementById('filter-count').textContent =
+    n !== t ? n.toLocaleString() + ' de ' + t.toLocaleString() + ' centros' : t.toLocaleString() + ' centros';
+  renderKPIs();
+  renderCharts();
+  renderBloqueDetail();
+  renderTable();
+}
+
+// ── KPIs ──
+function renderKPIs() {
+  const data = filtered;
+  const total    = data.length;
+  const cumple   = data.filter(r => r.cumple === 'Cumple').length;
+  const noCumple = data.filter(r => r.cumple === 'No cumple').length;
+  const sinDato  = data.filter(r => r.cumple === 'Sin dato').length;
+  const pct      = total ? Math.round(cumple / total * 100) : 0;
+  const totMat   = data.reduce((s,r) => s + (r.matricula||0), 0);
+  const osRows   = data.filter(r => r.os != null);
+  const avgOS    = osRows.length ? Math.round(osRows.reduce((s,r) => s+r.os,0) / osRows.length) : 0;
+
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi-card blue"><div class="kpi-label">Total centros</div><div class="kpi-value">${total.toLocaleString()}</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Cumplen</div><div class="kpi-value">${cumple.toLocaleString()}</div><div class="kpi-sub">${pct}% del total</div></div>
+    <div class="kpi-card red"><div class="kpi-label">No cumplen</div><div class="kpi-value">${noCumple.toLocaleString()}</div><div class="kpi-sub">${total ? Math.round(noCumple/total*100) : 0}% del total</div></div>
+    <div class="kpi-card amber"><div class="kpi-label">Sin dato</div><div class="kpi-value">${sinDato.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Matrícula total</div><div class="kpi-value">${totMat.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-label">OS promedio</div><div class="kpi-value">${avgOS}</div><div class="kpi-sub">Mbps</div></div>
+  `;
+}
+
+// ── Charts ──
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+const PIE_OPTS = (pos='bottom') => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: pos,
+      labels: { color:'#8b92a8', font:{size:11}, padding:12, boxWidth:12, boxHeight:12 }
+    },
+    tooltip: {
+      callbacks: {
+        label: ctx => {
+          const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+          const pct = total ? Math.round(ctx.parsed / total * 100) : 0;
+          return ` ${ctx.label}: ${ctx.parsed.toLocaleString()} (${pct}%)`;
+        }
+      }
     }
   }
+});
 
-  // ── Populate filter dropdowns ──────────────────────────
-  function populateFilters() {
-    const unique = (key) => [...new Set(allData.map(r => r[key]).filter(Boolean))].sort();
+function renderCharts() {
+  const data = filtered;
 
-    const bloques = unique('bloque');
-    const zonas   = unique('zona');
-    const deptos  = unique('departamento');
+  // 1. Pastel cumplimiento general
+  const cumpleMap = { 'Cumple': 0, 'No cumple': 0, 'Sin dato': 0 };
+  data.forEach(r => { if (cumpleMap[r.cumple] !== undefined) cumpleMap[r.cumple]++; });
+  destroyChart('cumplimiento');
+  charts['cumplimiento'] = new Chart(document.getElementById('chart-cumplimiento'), {
+    type: 'pie',
+    data: {
+      labels: Object.keys(cumpleMap),
+      datasets: [{ data: Object.values(cumpleMap), backgroundColor: ['#34d399','#f87171','#4b5270'], borderWidth: 2, borderColor: '#171b26' }]
+    },
+    options: PIE_OPTS('bottom')
+  });
 
-    fill('f-bloque', bloques);
-    fill('f-zona',   zonas);
-    fill('f-depto',  deptos);
-  }
+  // 2. Pastel zona
+  const zonaMap = {};
+  data.forEach(r => { const z = r.zona||'Sin dato'; zonaMap[z] = (zonaMap[z]||0)+1; });
+  const zonaLabels = Object.keys(zonaMap);
+  destroyChart('zona');
+  charts['zona'] = new Chart(document.getElementById('chart-zona'), {
+    type: 'pie',
+    data: {
+      labels: zonaLabels,
+      datasets: [{ data: zonaLabels.map(z => zonaMap[z]), backgroundColor: PIE_COLORS.slice(0, zonaLabels.length), borderWidth: 2, borderColor: '#171b26' }]
+    },
+    options: PIE_OPTS('bottom')
+  });
 
-  function fill(id, values) {
-    const sel = document.getElementById(id);
-    values.forEach(v => {
-      const o = document.createElement('option');
-      o.value = v; o.textContent = v;
-      sel.appendChild(o);
-    });
-  }
+  // 3. Pastel: total por bloque (cuántos centros tiene cada bloque)
+  const bloques = [...new Set(data.map(r => r.bloque))].filter(b => b && b !== 'Sin bloque').sort();
+  const bloqueTotals = bloques.map(b => data.filter(r => r.bloque === b).length);
+  destroyChart('bloque-pie');
+  charts['bloque-pie'] = new Chart(document.getElementById('chart-bloque-pie'), {
+    type: 'pie',
+    data: {
+      labels: bloques,
+      datasets: [{ data: bloqueTotals, backgroundColor: PIE_COLORS.slice(0, bloques.length), borderWidth: 2, borderColor: '#171b26' }]
+    },
+    options: PIE_OPTS('right')
+  });
 
-  // ── Filters ────────────────────────────────────────────
-  function applyFilters() {
-    const bloque = document.getElementById('f-bloque').value;
-    const cumple = document.getElementById('f-cumple').value;
-    const zona   = document.getElementById('f-zona').value;
-    const depto  = document.getElementById('f-depto').value;
-    const search = document.getElementById('f-search').value.toLowerCase().trim();
+  // 4. Pastel departamentos
+  const deptoMap = {};
+  data.forEach(r => { const d = r.departamento||'Sin dato'; deptoMap[d] = (deptoMap[d]||0)+1; });
+  const deptoEntries = Object.entries(deptoMap).sort((a,b) => b[1]-a[1]);
+  const deptoLabels = deptoEntries.map(d => d[0]);
+  destroyChart('depto');
+  charts['depto'] = new Chart(document.getElementById('chart-depto'), {
+    type: 'pie',
+    data: {
+      labels: deptoLabels,
+      datasets: [{ data: deptoEntries.map(d => d[1]), backgroundColor: PIE_COLORS.slice(0, deptoLabels.length), borderWidth: 2, borderColor: '#171b26' }]
+    },
+    options: PIE_OPTS('right')
+  });
+}
 
-    filtered = allData.filter(r => {
-      if (bloque && r.bloque !== bloque)           return false;
-      if (cumple && r.cumple !== cumple)           return false;
-      if (zona   && r.zona   !== zona)             return false;
-      if (depto  && r.departamento !== depto)      return false;
-      if (search) {
-        const hay = (r.nombre + r.codigo + r.municipio).toLowerCase();
-        if (!hay.includes(search)) return false;
-      }
-      return true;
-    });
+// ── Bloque detail bars ──
+function renderBloqueDetail() {
+  const data = filtered;
+  const bloques = [...new Set(data.map(r => r.bloque))].sort();
+  document.getElementById('bloque-detail').innerHTML = bloques.map(b => {
+    const rows = data.filter(r => r.bloque === b);
+    const total = rows.length;
+    const ok = rows.filter(r => r.cumple === 'Cumple').length;
+    const no = rows.filter(r => r.cumple === 'No cumple').length;
+    const sd = total - ok - no;
+    const pOk = total ? Math.round(ok/total*100) : 0;
+    const pNo = total ? Math.round(no/total*100) : 0;
+    const pSd = Math.max(0, 100 - pOk - pNo);
+    return `
+      <div class="bloque-row">
+        <div class="bloque-header">
+          <span class="bloque-name">${b}</span>
+          <span class="bloque-stats">${ok} cumplen · ${no} no cumplen · ${sd} sin dato — total ${total}</span>
+        </div>
+        <div class="bloque-bar-bg">
+          <div class="bloque-seg" style="width:${pOk}%;background:#34d399"></div>
+          <div class="bloque-seg" style="width:${pNo}%;background:#f87171"></div>
+          <div class="bloque-seg" style="width:${pSd}%;background:#4b5270"></div>
+        </div>
+      </div>`;
+  }).join('');
+}
 
-    currentPage = 1;
-    renderAll();
-  }
+// ── Table ──
+function renderTable() {
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  currentPage = Math.min(currentPage, pages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const slice = filtered.slice(start, start + PAGE_SIZE);
 
-  function resetFilters() {
-    ['f-bloque','f-cumple','f-zona','f-depto'].forEach(id =>
-      document.getElementById(id).value = ''
-    );
-    document.getElementById('f-search').value = '';
-    filtered = [...allData];
-    currentPage = 1;
-    renderAll();
-  }
+  document.getElementById('table-info').textContent = total.toLocaleString() + ' registros';
+  document.getElementById('table-body').innerHTML = slice.map(r => {
+    const bc = r.cumple === 'Cumple' ? 'badge-ok' : r.cumple === 'No cumple' ? 'badge-no' : 'badge-nd';
+    return `<tr>
+      <td class="mono">${r.codigo}</td>
+      <td class="nombre-cell" title="${r.nombre}">${r.nombre}</td>
+      <td>${r.municipio}</td><td>${r.departamento}</td><td>${r.bloque}</td><td>${r.zona||'—'}</td>
+      <td class="num">${r.matricula != null ? r.matricula.toLocaleString() : '—'}</td>
+      <td class="num">${r.os != null ? r.os.toLocaleString() : '—'}</td>
+      <td class="num">${r.es != null ? r.es.toLocaleString() : '—'}</td>
+      <td><span class="badge ${bc}"><span class="badge-dot"></span>${r.cumple}</span></td>
+    </tr>`;
+  }).join('');
 
-  // ── Render all ─────────────────────────────────────────
-  function renderAll() {
-    document.getElementById('filter-count').textContent =
-      filtered.length !== allData.length
-        ? `${filtered.length.toLocaleString()} de ${allData.length.toLocaleString()} centros`
-        : `${allData.length.toLocaleString()} centros`;
+  document.getElementById('pg-info').textContent = 'Página ' + currentPage + ' de ' + pages;
+  let pgHtml = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  const s = Math.max(1, currentPage-2), e = Math.min(pages, currentPage+2);
+  for (let i = s; i <= e; i++) pgHtml += `<button class="pg-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  pgHtml += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+  document.getElementById('pg-controls').innerHTML = pgHtml;
+}
 
-    renderKPIs();
-    renderCharts();
-    renderBloqueDetail();
-    renderTable();
-  }
+window.goPage = (p) => {
+  currentPage = p;
+  renderTable();
+  document.querySelector('.table-section').scrollIntoView({behavior:'smooth', block:'start'});
+};
 
-  // ── KPIs ───────────────────────────────────────────────
-  function renderKPIs() {
-    const data = filtered;
-    const total     = data.length;
-    const cumple    = data.filter(r => r.cumple === 'Cumple').length;
-    const noCumple  = data.filter(r => r.cumple === 'No cumple').length;
-    const sinDato   = data.filter(r => r.cumple === 'Sin dato').length;
-    const pct       = total ? Math.round(cumple / total * 100) : 0;
-    const totMat    = data.reduce((s,r) => s + (r.matricula || 0), 0);
-    const avgOS     = data.filter(r => r.os).length
-                    ? Math.round(data.reduce((s,r) => s + (r.os||0), 0) / data.filter(r => r.os).length)
-                    : 0;
-
-    document.getElementById('kpi-row').innerHTML = `
-      <div class="kpi-card blue">
-        <div class="kpi-label">Total centros</div>
-        <div class="kpi-value">${total.toLocaleString()}</div>
-      </div>
-      <div class="kpi-card green">
-        <div class="kpi-label">Cumplen</div>
-        <div class="kpi-value">${cumple.toLocaleString()}</div>
-        <div class="kpi-sub">${pct}% del total</div>
-      </div>
-      <div class="kpi-card red">
-        <div class="kpi-label">No cumplen</div>
-        <div class="kpi-value">${noCumple.toLocaleString()}</div>
-        <div class="kpi-sub">${total ? Math.round(noCumple/total*100) : 0}% del total</div>
-      </div>
-      <div class="kpi-card amber">
-        <div class="kpi-label">Sin dato</div>
-        <div class="kpi-value">${sinDato.toLocaleString()}</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Matrícula total</div>
-        <div class="kpi-value">${totMat.toLocaleString()}</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">OS promedio</div>
-        <div class="kpi-value">${avgOS}</div>
-        <div class="kpi-sub">Mbps</div>
-      </div>
-    `;
-  }
-
-  // ── Charts ─────────────────────────────────────────────
-  function destroyChart(id) {
-    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
-  }
-
-  function renderCharts() {
-    const data = filtered;
-
-    // --- Bloque stacked bar ---
-    const bloques = [...new Set(data.map(r => r.bloque))].filter(b => b && b !== 'Sin bloque').sort();
-    const bStats = {};
-    bloques.forEach(b => bStats[b] = {ok:0, no:0, sd:0});
-    data.forEach(r => {
-      if (!bStats[r.bloque]) return;
-      if (r.cumple === 'Cumple')     bStats[r.bloque].ok++;
-      else if (r.cumple === 'No cumple') bStats[r.bloque].no++;
-      else                           bStats[r.bloque].sd++;
-    });
-
-    destroyChart('bloque');
-    charts['bloque'] = new Chart(document.getElementById('chart-bloque'), {
-      type: 'bar',
-      data: {
-        labels: bloques,
-        datasets: [
-          { label: 'Cumple',    data: bloques.map(b => bStats[b].ok), backgroundColor: '#34d399', borderWidth: 0 },
-          { label: 'No cumple', data: bloques.map(b => bStats[b].no), backgroundColor: '#f87171', borderWidth: 0 },
-          { label: 'Sin dato',  data: bloques.map(b => bStats[b].sd), backgroundColor: '#4b5270', borderWidth: 0 }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { stacked: true, ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
-          y: { stacked: true, ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
-        }
-      }
-    });
-
-    // --- Zona doughnut ---
-    const zonaMap = {};
-    data.forEach(r => { const z = r.zona || 'Sin dato'; zonaMap[z] = (zonaMap[z]||0)+1; });
-    const zonaLabels = Object.keys(zonaMap);
-    const zonaColors = ['#4f7cf7','#34d399','#fbbf24','#f87171','#a78bfa'];
-
-    destroyChart('zona');
-    charts['zona'] = new Chart(document.getElementById('chart-zona'), {
-      type: 'doughnut',
-      data: {
-        labels: zonaLabels,
-        datasets: [{
-          data: zonaLabels.map(z => zonaMap[z]),
-          backgroundColor: zonaColors.slice(0, zonaLabels.length),
-          borderWidth: 2, borderColor: '#171b26'
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'bottom', labels: { color: '#8b92a8', font: { size: 11 }, padding: 12 } }
-        }
-      }
-    });
-
-    // --- OS promedio por bloque ---
-    const osAvg = bloques.map(b => {
-      const rows = data.filter(r => r.bloque === b && r.os != null);
-      return rows.length ? Math.round(rows.reduce((s,r) => s+r.os, 0) / rows.length) : 0;
-    });
-
-    destroyChart('os');
-    charts['os'] = new Chart(document.getElementById('chart-os'), {
-      type: 'bar',
-      data: {
-        labels: bloques,
-        datasets: [{
-          label: 'OS prom (Mbps)',
-          data: osAvg,
-          backgroundColor: '#4f7cf7',
-          borderRadius: 4,
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
-          y: { ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
-        }
-      }
-    });
-
-    // --- Centros por departamento ---
-    const deptoMap = {};
-    data.forEach(r => { const d = r.departamento||'Sin dato'; deptoMap[d] = (deptoMap[d]||0)+1; });
-    const deptoEntries = Object.entries(deptoMap).sort((a,b) => b[1]-a[1]).slice(0,12);
-
-    destroyChart('depto');
-    const deptoWrapHeight = Math.max(200, deptoEntries.length * 32 + 40);
-    document.getElementById('chart-depto').parentElement.style.height = deptoWrapHeight + 'px';
-    charts['depto'] = new Chart(document.getElementById('chart-depto'), {
-      type: 'bar',
-      data: {
-        labels: deptoEntries.map(d => d[0]),
-        datasets: [{
-          label: 'Centros',
-          data: deptoEntries.map(d => d[1]),
-          backgroundColor: '#a78bfa',
-          borderRadius: 4, borderWidth: 0
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
-          y: { ticks: { color: '#8b92a8', font: { size: 10 } }, grid: { display: false } }
-        }
-      }
-    });
-  }
-
-  // ── Bloque detail bars ─────────────────────────────────
-  function renderBloqueDetail() {
-    const data = filtered;
-    const bloques = [...new Set(data.map(r => r.bloque))].sort();
-
-    document.getElementById('bloque-detail').innerHTML = bloques.map(b => {
-      const rows = data.filter(r => r.bloque === b);
-      const total = rows.length;
-      const ok = rows.filter(r => r.cumple === 'Cumple').length;
-      const no = rows.filter(r => r.cumple === 'No cumple').length;
-      const sd = total - ok - no;
-      const pOk = total ? Math.round(ok/total*100) : 0;
-      const pNo = total ? Math.round(no/total*100) : 0;
-      const pSd = total ? (100 - pOk - pNo) : 0;
-      return `
-        <div class="bloque-row">
-          <div class="bloque-header">
-            <span class="bloque-name">${b}</span>
-            <span class="bloque-stats">${ok} cumplen · ${no} no cumplen · ${sd} sin dato — total ${total}</span>
-          </div>
-          <div class="bloque-bar-bg">
-            <div class="bloque-seg" style="width:${pOk}%;background:#34d399"></div>
-            <div class="bloque-seg" style="width:${pNo}%;background:#f87171"></div>
-            <div class="bloque-seg" style="width:${pSd}%;background:#4b5270"></div>
-          </div>
-        </div>`;
-    }).join('');
-  }
-
-  // ── Table ──────────────────────────────────────────────
-  function renderTable() {
-    const total = filtered.length;
-    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-    currentPage = Math.min(currentPage, pages);
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const slice = filtered.slice(start, start + PAGE_SIZE);
-
-    document.getElementById('table-info').textContent =
-      `${total.toLocaleString()} registros`;
-
-    document.getElementById('table-body').innerHTML = slice.map(r => {
-      const badgeCls = r.cumple === 'Cumple' ? 'badge-ok' : r.cumple === 'No cumple' ? 'badge-no' : 'badge-nd';
-      const mat = r.matricula != null ? r.matricula.toLocaleString() : '—';
-      const os  = r.os        != null ? r.os.toLocaleString()        : '—';
-      const es  = r.es        != null ? r.es.toLocaleString()        : '—';
-      return `<tr>
-        <td class="mono">${r.codigo}</td>
-        <td class="nombre-cell" title="${r.nombre}">${r.nombre}</td>
-        <td>${r.municipio}</td>
-        <td>${r.departamento}</td>
-        <td>${r.bloque}</td>
-        <td>${r.zona||'—'}</td>
-        <td class="num">${mat}</td>
-        <td class="num">${os}</td>
-        <td class="num">${es}</td>
-        <td><span class="badge ${badgeCls}"><span class="badge-dot"></span>${r.cumple}</span></td>
-      </tr>`;
-    }).join('');
-
-    // Pagination
-    document.getElementById('pg-info').textContent =
-      `Página ${currentPage} de ${pages}`;
-
-    let pgHtml = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-    const s = Math.max(1, currentPage-2), e = Math.min(pages, currentPage+2);
-    for (let i = s; i <= e; i++)
-      pgHtml += `<button class="pg-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
-    pgHtml += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
-    document.getElementById('pg-controls').innerHTML = pgHtml;
-  }
-
-  window.goPage = (p) => { currentPage = p; renderTable(); window.scrollTo({top: document.querySelector('.table-section').offsetTop - 20, behavior:'smooth'}); };
-
-  // ── Start ──────────────────────────────────────────────
-  init();
+init();
 </script>
 </body>
 </html>
