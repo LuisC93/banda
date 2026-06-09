@@ -423,8 +423,8 @@ function renderTable(){
       <td class="mono">${r.codigo}</td><td class="nc" title="${r.nombre}">${r.nombre}</td>
       <td>${r.municipio}</td><td>${r.departamento}</td><td>${r.bloque}</td><td>${r.zona||'—'}</td>
       <td class="num">${r.matricula!=null?r.matricula.toLocaleString():'—'}</td>
-      <td class="num">${r.os!=null?r.os.toLocaleString():'—'}</td>
-      <td class="num">${r.es!=null?r.es.toLocaleString():'—'}</td>
+      <td class="num">${r.contratados!=null?r.os.toLocaleString():'—'}</td>
+      <td class="num">${r.inspecciones!=null?r.es.toLocaleString():'—'}</td>
       <td><span class="badge ${bc}"><span class="bdot"></span>${r.cumple}</span></td>
     </tr>`;
   }).join('');
