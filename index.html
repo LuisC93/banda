@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ancho de Banda 3.0 — Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --bg2:       #171b26;
+      --bg3:       #1e2333;
+      --border:    rgba(255,255,255,0.08);
+      --border2:   rgba(255,255,255,0.14);
+      --text:      #e8eaf0;
+      --text2:     #8b92a8;
+      --text3:     #5a6075;
+      --accent:    #4f7cf7;
+      --green:     #34d399;
+      --green-bg:  rgba(52,211,153,0.12);
+      --red:       #f87171;
+      --red-bg:    rgba(248,113,113,0.12);
+      --amber:     #fbbf24;
+      --amber-bg:  rgba(251,191,36,0.12);
+      --radius:    10px;
+      --radius-lg: 14px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-logo {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .header-logo svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; }
+    .header-title { font-size: 15px; font-weight: 600; color: var(--text); }
+    .header-sub { font-size: 12px; color: var(--text2); }
+    .header-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text2);
+    }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── Layout ── */
+    .page { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+
+    /* ── Loading / Error ── */
+    .loading-screen {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 16px; padding: 5rem 2rem;
+      color: var(--text2);
+    }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--border2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-box {
+      background: var(--red-bg);
+      border: 1px solid rgba(248,113,113,0.3);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      color: var(--red);
+      font-size: 13px;
+      margin: 2rem 0;
+    }
+
+    /* ── KPI Cards ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .kpi-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .kpi-card:hover { border-color: var(--border2); }
+    .kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .kpi-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
+    .kpi-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+    .kpi-card.green .kpi-value { color: var(--green); }
+    .kpi-card.red   .kpi-value { color: var(--red); }
+    .kpi-card.amber .kpi-value { color: var(--amber); }
+    .kpi-card.blue  .kpi-value { color: var(--accent); }
+
+    /* ── Filters ── */
+    .filters-bar {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 3px; }
+    .filter-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+    .filters-bar select,
+    .filters-bar input[type="search"] {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      padding: 6px 10px;
+      outline: none;
+      transition: border-color 0.2s;
+      min-width: 130px;
+    }
+    .filters-bar select:focus,
+    .filters-bar input:focus { border-color: var(--accent); }
+    .filter-search { flex: 1; min-width: 180px; }
+    .btn-reset {
+      background: transparent;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--text2);
+      font-size: 12px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-self: flex-end;
+    }
+    .btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text2);
+      align-self: flex-end;
+      padding-bottom: 2px;
+    }
+
+    /* ── Charts grid ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 1.5rem;
+    }
+    .chart-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+    }
+    .chart-card.full { grid-column: 1 / -1; }
+    .chart-title { font-size: 12px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
+    .chart-wrap { position: relative; width: 100%; }
+    .legend-row {
+      display: flex; flex-wrap: wrap; gap: 14px;
+      margin-bottom: 10px; font-size: 12px; color: var(--text2);
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-sq { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Bloques progress ── */
+    .bloque-list { display: flex; flex-direction: column; gap: 10px; }
+    .bloque-row { display: flex; flex-direction: column; gap: 4px; }
+    .bloque-header { display: flex; justify-content: space-between; font-size: 12px; }
+    .bloque-name { font-weight: 500; color: var(--text); }
+    .bloque-stats { color: var(--text2); }
+    .bloque-bar-bg { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; display: flex; }
+    .bloque-seg { height: 100%; transition: width 0.5s ease; }
+
+    /* ── Table ── */
+    .table-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .table-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .table-header-title { font-size: 13px; font-weight: 500; color: var(--text); }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    thead th {
+      background: var(--bg3);
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg3); }
+    tbody td {
+      padding: 9px 14px;
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    td.mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text2);
+    }
+    td.nombre-cell {
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .badge-ok    { background: var(--green-bg); color: var(--green); }
+    .badge-no    { background: var(--red-bg);   color: var(--red); }
+    .badge-nd    { background: rgba(139,146,168,0.12); color: var(--text2); }
+    .badge-dot   { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    /* ── Pagination ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text2);
+    }
+    .pg-controls { display: flex; gap: 4px; }
+    .pg-btn {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--text2);
+      font-size: 12px;
+      padding: 5px 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pg-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .pg-btn:disabled { opacity: 0.35; cursor: default; }
+    .pg-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .page { padding: 1rem; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .header { padding: 0 1rem; }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <div class="header-logo">
+      <svg viewBox="0 0 24 24"><path d="M1 6l10.5 6L22 6M1 6v12l10.5 6L22 18V6"/></svg>
+    </div>
+    <div>
+      <div class="header-title">Ancho de Banda 3.0</div>
+      <div class="header-sub">MINEDUCYT — Monitoreo de conectividad escolar</div>
+    </div>
+  </div>
+  <div class="header-status">
+    <span class="status-dot"></span>
+    <span id="header-status-text">Cargando...</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- Loading -->
+  <div id="loading" class="loading-screen">
+    <div class="spinner"></div>
+    <span>Cargando datos desde la API...</span>
+  </div>
+
+  <!-- Error -->
+  <div id="error-box" class="error-box" style="display:none"></div>
+
+  <!-- Dashboard (hidden until data loads) -->
+  <div id="dashboard" style="display:none">
+
+    <!-- KPIs -->
+    <div class="kpi-row" id="kpi-row"></div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="filter-group">
+        <span class="filter-label">Bloque</span>
+        <select id="f-bloque"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Cumplimiento</span>
+        <select id="f-cumple">
+          <option value="">Todos</option>
+          <option value="Cumple">✓ Cumple</option>
+          <option value="No cumple">✗ No cumple</option>
+          <option value="Sin dato">— Sin dato</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Zona</span>
+        <select id="f-zona"><option value="">Todas</option></select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Departamento</span>
+        <select id="f-depto"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-group filter-search">
+        <span class="filter-label">Buscar</span>
+        <input type="search" id="f-search" placeholder="Nombre, código, municipio…" />
+      </div>
+      <button class="btn-reset" onclick="resetFilters()">Limpiar</button>
+      <span class="filter-count" id="filter-count"></span>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+
+      <div class="chart-card">
+        <div class="chart-title">Cumplimiento por bloque</div>
+        <div class="legend-row">
+          <span class="legend-item"><span class="legend-sq" style="background:#34d399"></span>Cumple</span>
+          <span class="legend-item"><span class="legend-sq" style="background:#f87171"></span>No cumple</span>
+          <span class="legend-item"><span class="legend-sq" style="background:#4b5270"></span>Sin dato</span>
+        </div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="chart-bloque" role="img" aria-label="Cumplimiento por bloque"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Distribución por zona</div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="chart-zona" role="img" aria-label="Distribución por zona"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">OS asignado promedio por bloque (Mbps)</div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="chart-os" role="img" aria-label="OS promedio por bloque"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Centros por departamento</div>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="chart-depto" role="img" aria-label="Centros por departamento"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card full">
+        <div class="chart-title">Detalle de cumplimiento por bloque</div>
+        <div class="bloque-list" id="bloque-detail"></div>
+      </div>
+
+    </div>
+
+    <!-- Table -->
+    <div class="table-section">
+      <div class="table-header">
+        <span class="table-header-title">Registros detallados</span>
+        <span id="table-info" style="font-size:12px;color:var(--text2)"></span>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Centro educativo</th>
+              <th>Municipio</th>
+              <th>Departamento</th>
+              <th>Bloque</th>
+              <th>Zona</th>
+              <th style="text-align:right">Matrícula</th>
+              <th style="text-align:right">OS (Mbps)</th>
+              <th style="text-align:right">ES</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span id="pg-info"></span>
+        <div class="pg-controls" id="pg-controls"></div>
+      </div>
+    </div>
+
+  </div><!-- /dashboard -->
+</div><!-- /page -->
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycby7aWrOjmrDChqx0GyK-gVi2iKH0hT_c8wI2_nAE-DoF3IYgSPR4f071xr_bbdSMzxFLg/exec';
+  const PAGE_SIZE = 25;
+
+  let allData = [];
+  let filtered = [];
+  let currentPage = 1;
+  let charts = {};
+
+  // ── Fetch ──────────────────────────────────────────────
+  async function fetchData() {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (json.status === 'error') throw new Error(json.message);
+    return json.data || [];
+  }
+
+  // ── Init ───────────────────────────────────────────────
+  async function init() {
+    try {
+      allData = await fetchData();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('header-status-text').textContent =
+        `${allData.length.toLocaleString()} centros cargados`;
+
+      populateFilters();
+      filtered = [...allData];
+      renderAll();
+
+      ['f-bloque','f-cumple','f-zona','f-depto'].forEach(id =>
+        document.getElementById(id).addEventListener('change', applyFilters)
+      );
+      document.getElementById('f-search').addEventListener('input', applyFilters);
+
+    } catch (e) {
+      document.getElementById('loading').style.display = 'none';
+      const eb = document.getElementById('error-box');
+      eb.style.display = 'block';
+      eb.textContent = '⚠ Error al cargar la API: ' + e.message;
+      document.getElementById('header-status-text').textContent = 'Error de conexión';
+    }
+  }
+
+  // ── Populate filter dropdowns ──────────────────────────
+  function populateFilters() {
+    const unique = (key) => [...new Set(allData.map(r => r[key]).filter(Boolean))].sort();
+
+    const bloques = unique('bloque');
+    const zonas   = unique('zona');
+    const deptos  = unique('departamento');
+
+    fill('f-bloque', bloques);
+    fill('f-zona',   zonas);
+    fill('f-depto',  deptos);
+  }
+
+  function fill(id, values) {
+    const sel = document.getElementById(id);
+    values.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v; o.textContent = v;
+      sel.appendChild(o);
+    });
+  }
+
+  // ── Filters ────────────────────────────────────────────
+  function applyFilters() {
+    const bloque = document.getElementById('f-bloque').value;
+    const cumple = document.getElementById('f-cumple').value;
+    const zona   = document.getElementById('f-zona').value;
+    const depto  = document.getElementById('f-depto').value;
+    const search = document.getElementById('f-search').value.toLowerCase().trim();
+
+    filtered = allData.filter(r => {
+      if (bloque && r.bloque !== bloque)           return false;
+      if (cumple && r.cumple !== cumple)           return false;
+      if (zona   && r.zona   !== zona)             return false;
+      if (depto  && r.departamento !== depto)      return false;
+      if (search) {
+        const hay = (r.nombre + r.codigo + r.municipio).toLowerCase();
+        if (!hay.includes(search)) return false;
+      }
+      return true;
+    });
+
+    currentPage = 1;
+    renderAll();
+  }
+
+  function resetFilters() {
+    ['f-bloque','f-cumple','f-zona','f-depto'].forEach(id =>
+      document.getElementById(id).value = ''
+    );
+    document.getElementById('f-search').value = '';
+    filtered = [...allData];
+    currentPage = 1;
+    renderAll();
+  }
+
+  // ── Render all ─────────────────────────────────────────
+  function renderAll() {
+    document.getElementById('filter-count').textContent =
+      filtered.length !== allData.length
+        ? `${filtered.length.toLocaleString()} de ${allData.length.toLocaleString()} centros`
+        : `${allData.length.toLocaleString()} centros`;
+
+    renderKPIs();
+    renderCharts();
+    renderBloqueDetail();
+    renderTable();
+  }
+
+  // ── KPIs ───────────────────────────────────────────────
+  function renderKPIs() {
+    const data = filtered;
+    const total     = data.length;
+    const cumple    = data.filter(r => r.cumple === 'Cumple').length;
+    const noCumple  = data.filter(r => r.cumple === 'No cumple').length;
+    const sinDato   = data.filter(r => r.cumple === 'Sin dato').length;
+    const pct       = total ? Math.round(cumple / total * 100) : 0;
+    const totMat    = data.reduce((s,r) => s + (r.matricula || 0), 0);
+    const avgOS     = data.filter(r => r.os).length
+                    ? Math.round(data.reduce((s,r) => s + (r.os||0), 0) / data.filter(r => r.os).length)
+                    : 0;
+
+    document.getElementById('kpi-row').innerHTML = `
+      <div class="kpi-card blue">
+        <div class="kpi-label">Total centros</div>
+        <div class="kpi-value">${total.toLocaleString()}</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">Cumplen</div>
+        <div class="kpi-value">${cumple.toLocaleString()}</div>
+        <div class="kpi-sub">${pct}% del total</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">No cumplen</div>
+        <div class="kpi-value">${noCumple.toLocaleString()}</div>
+        <div class="kpi-sub">${total ? Math.round(noCumple/total*100) : 0}% del total</div>
+      </div>
+      <div class="kpi-card amber">
+        <div class="kpi-label">Sin dato</div>
+        <div class="kpi-value">${sinDato.toLocaleString()}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Matrícula total</div>
+        <div class="kpi-value">${totMat.toLocaleString()}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">OS promedio</div>
+        <div class="kpi-value">${avgOS}</div>
+        <div class="kpi-sub">Mbps</div>
+      </div>
+    `;
+  }
+
+  // ── Charts ─────────────────────────────────────────────
+  function destroyChart(id) {
+    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+  }
+
+  function renderCharts() {
+    const data = filtered;
+
+    // --- Bloque stacked bar ---
+    const bloques = [...new Set(data.map(r => r.bloque))].filter(b => b && b !== 'Sin bloque').sort();
+    const bStats = {};
+    bloques.forEach(b => bStats[b] = {ok:0, no:0, sd:0});
+    data.forEach(r => {
+      if (!bStats[r.bloque]) return;
+      if (r.cumple === 'Cumple')     bStats[r.bloque].ok++;
+      else if (r.cumple === 'No cumple') bStats[r.bloque].no++;
+      else                           bStats[r.bloque].sd++;
+    });
+
+    destroyChart('bloque');
+    charts['bloque'] = new Chart(document.getElementById('chart-bloque'), {
+      type: 'bar',
+      data: {
+        labels: bloques,
+        datasets: [
+          { label: 'Cumple',    data: bloques.map(b => bStats[b].ok), backgroundColor: '#34d399', borderWidth: 0 },
+          { label: 'No cumple', data: bloques.map(b => bStats[b].no), backgroundColor: '#f87171', borderWidth: 0 },
+          { label: 'Sin dato',  data: bloques.map(b => bStats[b].sd), backgroundColor: '#4b5270', borderWidth: 0 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { stacked: true, ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { stacked: true, ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+        }
+      }
+    });
+
+    // --- Zona doughnut ---
+    const zonaMap = {};
+    data.forEach(r => { const z = r.zona || 'Sin dato'; zonaMap[z] = (zonaMap[z]||0)+1; });
+    const zonaLabels = Object.keys(zonaMap);
+    const zonaColors = ['#4f7cf7','#34d399','#fbbf24','#f87171','#a78bfa'];
+
+    destroyChart('zona');
+    charts['zona'] = new Chart(document.getElementById('chart-zona'), {
+      type: 'doughnut',
+      data: {
+        labels: zonaLabels,
+        datasets: [{
+          data: zonaLabels.map(z => zonaMap[z]),
+          backgroundColor: zonaColors.slice(0, zonaLabels.length),
+          borderWidth: 2, borderColor: '#171b26'
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { color: '#8b92a8', font: { size: 11 }, padding: 12 } }
+        }
+      }
+    });
+
+    // --- OS promedio por bloque ---
+    const osAvg = bloques.map(b => {
+      const rows = data.filter(r => r.bloque === b && r.os != null);
+      return rows.length ? Math.round(rows.reduce((s,r) => s+r.os, 0) / rows.length) : 0;
+    });
+
+    destroyChart('os');
+    charts['os'] = new Chart(document.getElementById('chart-os'), {
+      type: 'bar',
+      data: {
+        labels: bloques,
+        datasets: [{
+          label: 'OS prom (Mbps)',
+          data: osAvg,
+          backgroundColor: '#4f7cf7',
+          borderRadius: 4,
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }
+        }
+      }
+    });
+
+    // --- Centros por departamento ---
+    const deptoMap = {};
+    data.forEach(r => { const d = r.departamento||'Sin dato'; deptoMap[d] = (deptoMap[d]||0)+1; });
+    const deptoEntries = Object.entries(deptoMap).sort((a,b) => b[1]-a[1]).slice(0,12);
+
+    destroyChart('depto');
+    const deptoWrapHeight = Math.max(200, deptoEntries.length * 32 + 40);
+    document.getElementById('chart-depto').parentElement.style.height = deptoWrapHeight + 'px';
+    charts['depto'] = new Chart(document.getElementById('chart-depto'), {
+      type: 'bar',
+      data: {
+        labels: deptoEntries.map(d => d[0]),
+        datasets: [{
+          label: 'Centros',
+          data: deptoEntries.map(d => d[1]),
+          backgroundColor: '#a78bfa',
+          borderRadius: 4, borderWidth: 0
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#8b92a8', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#8b92a8', font: { size: 10 } }, grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  // ── Bloque detail bars ─────────────────────────────────
+  function renderBloqueDetail() {
+    const data = filtered;
+    const bloques = [...new Set(data.map(r => r.bloque))].sort();
+
+    document.getElementById('bloque-detail').innerHTML = bloques.map(b => {
+      const rows = data.filter(r => r.bloque === b);
+      const total = rows.length;
+      const ok = rows.filter(r => r.cumple === 'Cumple').length;
+      const no = rows.filter(r => r.cumple === 'No cumple').length;
+      const sd = total - ok - no;
+      const pOk = total ? Math.round(ok/total*100) : 0;
+      const pNo = total ? Math.round(no/total*100) : 0;
+      const pSd = total ? (100 - pOk - pNo) : 0;
+      return `
+        <div class="bloque-row">
+          <div class="bloque-header">
+            <span class="bloque-name">${b}</span>
+            <span class="bloque-stats">${ok} cumplen · ${no} no cumplen · ${sd} sin dato — total ${total}</span>
+          </div>
+          <div class="bloque-bar-bg">
+            <div class="bloque-seg" style="width:${pOk}%;background:#34d399"></div>
+            <div class="bloque-seg" style="width:${pNo}%;background:#f87171"></div>
+            <div class="bloque-seg" style="width:${pSd}%;background:#4b5270"></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── Table ──────────────────────────────────────────────
+  function renderTable() {
+    const total = filtered.length;
+    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    currentPage = Math.min(currentPage, pages);
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const slice = filtered.slice(start, start + PAGE_SIZE);
+
+    document.getElementById('table-info').textContent =
+      `${total.toLocaleString()} registros`;
+
+    document.getElementById('table-body').innerHTML = slice.map(r => {
+      const badgeCls = r.cumple === 'Cumple' ? 'badge-ok' : r.cumple === 'No cumple' ? 'badge-no' : 'badge-nd';
+      const mat = r.matricula != null ? r.matricula.toLocaleString() : '—';
+      const os  = r.os        != null ? r.os.toLocaleString()        : '—';
+      const es  = r.es        != null ? r.es.toLocaleString()        : '—';
+      return `<tr>
+        <td class="mono">${r.codigo}</td>
+        <td class="nombre-cell" title="${r.nombre}">${r.nombre}</td>
+        <td>${r.municipio}</td>
+        <td>${r.departamento}</td>
+        <td>${r.bloque}</td>
+        <td>${r.zona||'—'}</td>
+        <td class="num">${mat}</td>
+        <td class="num">${os}</td>
+        <td class="num">${es}</td>
+        <td><span class="badge ${badgeCls}"><span class="badge-dot"></span>${r.cumple}</span></td>
+      </tr>`;
+    }).join('');
+
+    // Pagination
+    document.getElementById('pg-info').textContent =
+      `Página ${currentPage} de ${pages}`;
+
+    let pgHtml = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+    const s = Math.max(1, currentPage-2), e = Math.min(pages, currentPage+2);
+    for (let i = s; i <= e; i++)
+      pgHtml += `<button class="pg-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+    pgHtml += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+    document.getElementById('pg-controls').innerHTML = pgHtml;
+  }
+
+  window.goPage = (p) => { currentPage = p; renderTable(); window.scrollTo({top: document.querySelector('.table-section').offsetTop - 20, behavior:'smooth'}); };
+
+  // ── Start ──────────────────────────────────────────────
+  init();
+</script>
+</body>
+</html>
