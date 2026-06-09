@@ -203,9 +203,20 @@
 
     <!-- Tabla -->
     <div class="table-section">
-      <div class="table-header">
+      <div class="table-header" style="flex-wrap:wrap;gap:10px">
         <span class="table-header-title">Registros detallados</span>
-        <span id="tinfo" style="font-size:12px;color:var(--text2)"></span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-left:auto">
+          <select id="tf-bloque" onchange="renderTable()" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:5px 8px;outline:none">
+            <option value="">Todos los bloques</option>
+          </select>
+          <select id="tf-estado" onchange="renderTable()" style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:5px 8px;outline:none">
+            <option value="">Todos los estados</option>
+            <option value="Cumple">✓ Cumple</option>
+            <option value="No cumple">✗ No cumple</option>
+            <option value="Sin dato">— Sin dato</option>
+          </select>
+          <span id="tinfo" style="font-size:12px;color:var(--text2)"></span>
+        </div>
       </div>
       <div class="table-scroll">
         <table>
@@ -412,10 +423,22 @@ function renderPies(){
 }
 
 /* ── Tabla ── */
+function buildTableFilters(){
+  const sel=document.getElementById('tf-bloque');
+  const bloques=[...new Set(allData.map(r=>r.bloque).filter(Boolean))].sort();
+  bloques.forEach(b=>{ const o=document.createElement('option'); o.value=b; o.textContent=b; sel.appendChild(o); });
+}
 function renderTable(){
-  const tot=filtered.length, pages=Math.max(1,Math.ceil(tot/PS));
+  const tfB=document.getElementById('tf-bloque')?document.getElementById('tf-bloque').value:'';
+  const tfE=document.getElementById('tf-estado')?document.getElementById('tf-estado').value:'';
+  const tableData=filtered.filter(r=>{
+    if(tfB && r.bloque!==tfB) return false;
+    if(tfE && r.cumple!==tfE) return false;
+    return true;
+  });
+  const tot=tableData.length, pages=Math.max(1,Math.ceil(tot/PS));
   page=Math.min(page,pages);
-  const sl=filtered.slice((page-1)*PS,page*PS);
+  const sl=tableData.slice((page-1)*PS,page*PS);
   document.getElementById('tinfo').textContent=tot.toLocaleString()+' registros';
   document.getElementById('tbody').innerHTML=sl.map(r=>{
     const bc=r.cumple==='Cumple'?'bok':r.cumple==='No cumple'?'bno':'bnd';
